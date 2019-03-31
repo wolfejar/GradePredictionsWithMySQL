@@ -1,0 +1,12 @@
+# Ignore everything
+*
+
+# But not these files...
+!.gitignore
+!predictor.py
+!checkpoint
+!most_recent_model.data-00000-of-00001
+!most_recent_model.index
+
+# ...even if they are in subdirectories
+!*/
