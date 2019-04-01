@@ -8,8 +8,8 @@ pip install tensorflow
 pip install Flask  
 pip install matplotlib
 ```
-NOTE: You must have MySQL installed and runnnig on your system. The database required for training this model will be uploaded
-soon.
+NOTE: You must have MySQL installed and runnnig on your system. The database required for training this model is available at
+https://github.com/wolfejar/SchoolDatabaseMySQL
 
 ```bash
 pip install mysqlclient
