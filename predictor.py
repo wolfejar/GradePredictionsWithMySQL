@@ -32,7 +32,7 @@ case when CT.CourseTypeId = 7 then 1 else 0 end as NaturalandPhysicalSciences,
 case when CT.CourseTypeId = 8 then 1 else 0 end as SocialSciences
 from (
     Select S.StudentId, S.FirstName, S.LastName, SUM(C.CreditHours) as TotalCreditHours,
-    (SUM(CS.GradePoints * C.CreditHours) / SUM(C.CreditHours)) as GPA, S.OnCampus, S.IsWorking
+    S.GPA, S.OnCampus, S.IsWorking
     from CourseStudent CS
     join Course C on C.CourseId = CS.CourseId
     join Student S on S.StudentId = CS.StudentId
