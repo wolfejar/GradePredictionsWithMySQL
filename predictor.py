@@ -53,7 +53,7 @@ def build_list(arr):
             if i == 0:
                 outputs.append(float(col))
             elif i == 1:
-                resulting_row.append(float(col)/100.0)
+                resulting_row.append(float(col)/4.0)
             elif i == 2:
                 resulting_row.append(float(col) / 22.0)
             elif i == 6:

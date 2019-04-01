@@ -1,4 +1,3 @@
-import sys
 import numpy as np
 from flask import Flask, render_template, request
 import current_model
@@ -34,7 +33,7 @@ def send():
         SocialSciences = request.form.get('SocialSciences') is not None
 
         # normalize data as we enter it into input array
-        input_data = [float(gpa) / 100.0, float(totalcreditcours) / 22.0, float(int(oncampus)), float(int(isworking)),
+        input_data = [float(gpa) / 4.0, float(totalcreditcours) / 22.0, float(int(oncampus)), float(int(isworking)),
                       float(int(hasposition)), float(coursecredithours) / 6.0, float(courselevel) / 1000,
                       float(int(AestheticInterpetation)), float(int(EmpiricalandQuantitativeReasoning)),
                       float(int(EthicalReasoningandResponsibility)), float(int(GlobalIssuesandPerspectives)),
