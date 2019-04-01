@@ -24,7 +24,7 @@ python predictor.py [host][user][password][database]
 ## Running the Web App (No MySQL Required)
 
 ```bash
-python predictor.py
+python application.py
 ```
 
 http://127.0.0.1:5000/
