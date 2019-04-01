@@ -52,6 +52,14 @@ def build_list(arr):
         for i, col in enumerate(entry):
             if i == 0:
                 outputs.append(float(col))
+            elif i == 1:
+                resulting_row.append(float(col)/100.0)
+            elif i == 2:
+                resulting_row.append(float(col) / 22.0)
+            elif i == 6:
+                resulting_row.append(float(col) / 6.0)
+            elif i == 7:
+                resulting_row.append(float(col) / 1000.0)
             else:
                 resulting_row.append(float(col))
         inputs.append(resulting_row)
@@ -77,10 +85,10 @@ model.compile(loss='mean_squared_error',
               optimizer=optimizer,
               metrics=['mean_absolute_error', 'mean_squared_error'])
 
-if os.path.isfile('./checkpoint'):
+'''if os.path.isfile('./checkpoint'):
     model.load_weights('./most_recent_model')
-else:
-    model.fit(
+else:'''
+model.fit(
         input_rows, classifications,
         epochs=1000, validation_split=0.2, verbose=0)
 

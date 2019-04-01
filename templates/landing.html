@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>landing</title>
+</head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<body>
+<h1>Welcome to Grade Predictor</h1>
+
+<p>{{data}}</p>
+
+<h2>Enter the following data and we will predict your grade for the course!</h2>
+<br>
+
+<form method="post" action="/send">
+    <div class="form-group">
+        GPA: <input type="text" name="gpa"><br>
+        How many credit hours are you currently taking? <input type="text" name="totalcredithours"><br>
+        Do you live on campus? <input type="checkbox" name="oncampus"><br>
+        Will you be working outside of class? <input type="checkbox" name="isworking"><br>
+        Do you hold a position in a club/activity? <input type="checkbox" name="hasposition"><br>
+        How many credit hours is this course for? <input type="text" name="coursecredithours"><br>
+        What level is this course? (i.e. Math 101 -> 101) <input type="text" name="courselevel"><br>
+        <br><h4>K-State 8 - Check all that apply for this course:</h4>
+        Aesthetic Interpetation <input type="checkbox" name="AestheticInterpetation"><br>
+        Empirical and Quantitative Reasoning <input type="checkbox" name="EmpiricalandQuantitativeReasoning"><br>
+        Ethical Reasoning and Responsibility <input type="checkbox" name="EthicalReasoningandResponsibility"><br>
+        Global Issues and Perspectives <input type="checkbox" name="GlobalIssuesandPerspectives"><br>
+        Historical Perspectives <input type="checkbox" name="HistoricalPerspectives"><br>
+        Human Diversity within the US <input type="checkbox" name="HumanDiversitywithintheUS"><br>
+        Natural and Physical Sciences <input type="checkbox" name="NaturalandPhysicalSciences"><br>
+        Social Sciences <input type="checkbox" name="SocialSciences"><br>
+    </div>
+
+    <input class="btn btn-primary" type="submit" value="submit">
+</form>
+</body>
+</html>
