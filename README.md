@@ -15,12 +15,6 @@ https://github.com/wolfejar/SchoolDatabaseMySQL
 pip install mysqlclient
 ```
 
-## Training a New Model
-
-```bash
-python predictor.py [host][user][password][database]
-```
-
 ## Running the Web App (No MySQL Required)
 
 ```bash
@@ -28,3 +22,9 @@ python application.py
 ```
 
 http://127.0.0.1:5000/
+
+## Training a New Model
+
+```bash
+python predictor.py [host][user][password][database]
+```
