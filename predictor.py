@@ -85,10 +85,10 @@ model.compile(loss='mean_squared_error',
               optimizer=optimizer,
               metrics=['mean_absolute_error', 'mean_squared_error'])
 
-if os.path.isfile('./checkpoint'):
+'''if os.path.isfile('./checkpoint'):
     model.load_weights('./most_recent_model')
-else:
-    model.fit(
+else:'''
+model.fit(
         input_rows, classifications,
         epochs=1000, validation_split=0.2, verbose=0)
 
@@ -109,5 +109,5 @@ plt.xlim([0, plt.xlim()[1]])
 plt.ylim([0, plt.ylim()[1]])
 _ = plt.plot([-100, 100], [-100, 100])
 plt.savefig('static/recent_model.png')
-plt.show()
+# plt.show()
 model.save_weights('./most_recent_model')
