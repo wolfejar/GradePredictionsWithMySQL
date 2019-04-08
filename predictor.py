@@ -1,47 +1,11 @@
-import sys
 import os
+from sql_scripts import SQL
 import matplotlib.pyplot as plt
-import mysql.connector
 import tensorflow as tf
 from tensorflow import keras
 import numpy as np
 
-mydb = mysql.connector.connect(
-    host=sys.argv[1],
-    user=sys.argv[2],
-    passwd=sys.argv[3],
-    auth_plugin='mysql_native_password',
-    database=sys.argv[4]
-)
-
-print(mydb)
-
-my_cursor = mydb.cursor()
-
-my_cursor.execute('''Select CS.GradePoints, info.GPA as StudentGPA, info.TotalCreditHours as StudentTotalCreditHours,
-info.OnCampus as StudentOnCampus, info.IsWorking as StudentIsWorking,
-coalesce(AST.HasPosition, 0) as StudentHasActivityPosition, C.CreditHours as CourseCreditHours,
-C.CourseLevel,
-case when CT.CourseTypeId = 1 then 1 else 0 end as AestheticInterpretation,
-case when CT.CourseTypeId = 2 then 1 else 0 end as EmpiricalandQuantitativeReasoning,
-case when CT.CourseTypeId = 3 then 1 else 0 end as EthicalReasoningandResponsibility,
-case when CT.CourseTypeId = 4 then 1 else 0 end as GlobalIssuesandPerspectives,
-case when CT.CourseTypeId = 5 then 1 else 0 end as HistoricalPerspectives,
-case when CT.CourseTypeId = 6 then 1 else 0 end as HumanDiversitywithintheUS,
-case when CT.CourseTypeId = 7 then 1 else 0 end as NaturalandPhysicalSciences,
-case when CT.CourseTypeId = 8 then 1 else 0 end as SocialSciences
-from (
-    Select S.StudentId, S.FirstName, S.LastName, SUM(C.CreditHours) as TotalCreditHours,
-    S.GPA, S.OnCampus, S.IsWorking
-    from CourseStudent CS
-    join Course C on C.CourseId = CS.CourseId
-    join Student S on S.StudentId = CS.StudentId
-    group by S.StudentId
-) as info
-left join ActivityStudent AST on AST.StudentId = info.StudentId 
-join CourseStudent CS on CS.StudentId = info.StudentId
-join Course C on C.CourseId = CS.CourseId
-join CourseType CT on CT.CourseTypeId = C.CourseTypeId;''')
+sql = SQL()
 
 
 def build_list(arr):
@@ -71,7 +35,7 @@ def build_list(arr):
 # int course credit hours, int course level,
 # bool aesthetic, bool empirical, bool ethical, bool global issue, bool historical, bool human diversity,
 # bool natural/physical sciences, bool social sciences
-input_rows, classifications = build_list(my_cursor.fetchmany(4500))
+input_rows, classifications = build_list(sql.get_all_course_students(4500))
 
 model = keras.Sequential([
     keras.layers.Dense(15, activation=tf.nn.relu),
@@ -97,7 +61,7 @@ loss, mae, mse = model.evaluate(input_rows, classifications, verbose=0)
 print('Mean abs error:', mae)
 print('Mean square error: ', mse)
 
-test_rows, test_classifications = build_list(my_cursor.fetchmany(500))
+test_rows, test_classifications = build_list(sql.my_cursor.fetchmany(500))
 test_predictions = model.predict(test_rows)
 
 plt.scatter(test_classifications, test_predictions)

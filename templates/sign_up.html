@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+</head>
+<body>
+<H1>Enter a password</H1><br>
+<p>We will generate an ID for you to use as a username and display this on the next page.</p>
+<br>
+<form method="post" action="/sign_up_post">
+    First Name: <input type="text" name="firstname"><br>
+    Last Name: <input type="text" name="lastname"><br>
+    Check if you live on campus: <input type="checkbox" name="oncampus"><br>
+    Check if you are currently working a part time or full time job: <input type="checkbox" name="isworking"><br>
+    Enter your current GPA: <input type="number" step="0.01" name="gpa"><br>
+    Password: <input type="text" name="password"><br>
+    <input class="btn btn-primary" type="submit" value="submit">
+</form>
+
+<h3>All information is anonymous</h3>
+</body>
+</html>

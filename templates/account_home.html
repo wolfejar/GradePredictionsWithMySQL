@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{firstname}} Home</title>
+</head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<body>
+    <br>
+    <h2>Welcome {{firstname}}, you are signed in!</h2>
+
+    <br>
+
+    {% for item in data %}
+    <p> {{ item }} </p>
+    {% endfor %}
+
+    <form method="get" action="/edit_account_info_get">
+        <input class="btn btn-primary" type="submit" value="Edit account information">
+    </form>
+</body>
+</html>
