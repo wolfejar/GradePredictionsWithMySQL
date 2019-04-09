@@ -1,5 +1,5 @@
 import numpy as np
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 import current_model
 from sql_scripts import SQL
 
@@ -28,7 +28,8 @@ def sign_up_post():
     gpa = request.form.get('gpa')
     password = request.form.get('password')
     username = sql.create_student(first_name, last_name, bool(on_campus), bool(is_working), float(gpa), password)[0]
-    return account_home(username, password)
+    session['username'] = username
+    return account_home()
 
 
 @application.route('/sign_in_get', methods=['GET'])
@@ -42,24 +43,28 @@ def sign_in_post():
         username = request.form['username']
         password = request.form['password']
         if sql.sign_in(username, password):
-            return account_home(username, password)
+            session['username'] = username
+            return account_home()
         else:
             return sign_in_get()
 
 
 @application.route('/edit_account_info_get', methods=['GET'])
 def edit_account_info_get():
-    return render_template('edit_account.html')
+    course_data = sql.get_home_info(session['username'])
+    first_name = sql.get_student_first_name(session['username'])
+    student_info = sql.get_student_info_by_id(session['username'])
+    return render_template('edit_account.html', data=course_data, first_name=first_name, student_info=student_info)
 
 
 @application.route('/account_home', methods=['GET', 'POST'])
-def account_home(username, password):
-    data = sql.get_home_info(username, password)
-    firstname = sql.get_student_first_name(username, password)[0]
+def account_home():
+    data = sql.get_home_info(session['username'])
+    firstname = sql.get_student_first_name(session['username'])
     return render_template('account_home.html', firstname=firstname, data=data)
 
 
-@application.route('/send', methods=['GET', 'POST'])
+@application.route('/send', methods=['POST'])
 def send():
     if request.method == 'POST':
         gpa = request.form['gpa']
@@ -106,4 +111,5 @@ def send():
 
 
 if __name__ == '__main__':
+    application.secret_key = 'super secret key'
     application.run(debug=True)

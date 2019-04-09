@@ -7,6 +7,17 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <body>
-<H1>This is where you edit your course history and account details!</H1>
+<H1>{{first_name}}'s account details</H1>
+<br>
+    {% for item in student_info %}
+    <h4> {{ item }} <button>Edit</button></h4>
+    {% endfor %}
+<br>
+    {% for item in data %}
+    <h4> {{ item }} <button>Edit</button></h4>
+    {% endfor %}
+
+<br>
+<button onclick="">Add a Course</button>
 </body>
 </html>
