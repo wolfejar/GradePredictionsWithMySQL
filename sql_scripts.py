@@ -1,6 +1,6 @@
 import mysql.connector
 import sys
-
+from passlib.hash import pbkdf2_sha256
 
 class SQL:
     def __init__(self, ):
@@ -41,16 +41,16 @@ class SQL:
         join CourseType CT on CT.CourseTypeId = C.CourseTypeId;''')
         return self.my_cursor.fetchmany(how_many)
 
-    def sign_in(self, username, password):
+    def sign_in(self, username, raw):
+        return pbkdf2_sha256.verify(raw, self.get_hashed(username))
+
+    def get_hashed(self, username):
         self.my_cursor.execute('''
-            Select Case when exists(
-                Select 1
-                From Student S
-                Where S.StudentId = {} and S.StudentPassword = '{}'
-            ) then 1 else 0 end;
-            '''.format(username, password))
-        result = self.my_cursor.fetchone()
-        return bool(result[0])
+            SELECT S.StudentPassword
+            From Student S
+            Where S.StudentId = '{}'
+        '''.format(username))
+        return self.my_cursor.fetchone()[0]
 
     def get_home_info(self, username):
         self.my_cursor.execute('''

@@ -2,6 +2,7 @@ import numpy as np
 from flask import Flask, render_template, request, session
 import current_model
 from sql_scripts import SQL
+from passlib.hash import pbkdf2_sha256
 
 application = Flask(__name__)
 
@@ -26,8 +27,8 @@ def sign_up_post():
     on_campus = request.form.get('oncampus') is not None
     is_working = request.form.get('isworking') is not None
     gpa = request.form.get('gpa')
-    password = request.form.get('password')
-    username = sql.create_student(first_name, last_name, bool(on_campus), bool(is_working), float(gpa), password)[0]
+    hashed_pass = pbkdf2_sha256.hash(request.form['password'])
+    username = sql.create_student(first_name, last_name, bool(on_campus), bool(is_working), float(gpa), hashed_pass)[0]
     session['username'] = username
     return account_home()
 
@@ -41,12 +42,18 @@ def sign_in_get():
 def sign_in_post():
     if request.method == 'POST':
         username = request.form['username']
-        password = request.form['password']
-        if sql.sign_in(username, password):
+        raw = request.form['password']
+        if sql.sign_in(username, raw):
             session['username'] = username
             return account_home()
         else:
             return sign_in_get()
+
+
+@application.route('/logout', methods=['GET', 'POST'])
+def logout():
+    session.pop('username', None)
+    return home()
 
 
 @application.route('/edit_account_info_get', methods=['GET'])
@@ -55,6 +62,18 @@ def edit_account_info_get():
     first_name = sql.get_student_first_name(session['username'])
     student_info = sql.get_student_info_by_id(session['username'])
     return render_template('edit_account.html', data=course_data, first_name=first_name, student_info=student_info)
+
+
+@application.route('/edit_account_student_info_post', methods=['POST'])
+def edit_account_student_info_post():
+    request.form.get()
+    return account_home()
+
+
+@application.route('/edit_account_course_info_post', methods=['POST'])
+def edit_account_course_info_post():
+    request.form.get()
+    return account_home()
 
 
 @application.route('/account_home', methods=['GET', 'POST'])
