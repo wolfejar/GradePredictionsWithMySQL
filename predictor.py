@@ -1,4 +1,3 @@
-import os
 from sql_scripts import SQL
 import matplotlib.pyplot as plt
 import tensorflow as tf

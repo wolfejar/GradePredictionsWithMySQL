@@ -2,6 +2,7 @@ import mysql.connector
 import sys
 from passlib.hash import pbkdf2_sha256
 
+
 class SQL:
     def __init__(self, ):
         self.mydb = mysql.connector.connect(

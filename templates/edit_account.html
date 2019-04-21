@@ -5,69 +5,23 @@
     <title>Edit Account</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script type=text/javascript src="../static/js/edit_account_scripts.js"></script>
 </head>
 
-
 <body>
-
-<script type="text/javascript">
-    var account_info = ['first_name', 'last_name', 'username', 'gpa', 'on_campus', 'is_working'];
-    var i = 0;
-    function load_student_info(student_item) {
-        var input_field = document.createElement("INPUT");
-        input_field.setAttribute("type", "text");
-        input_field.setAttribute("name", account_info[i]);
-        input_field.setAttribute("value", student_item);
-        document.body.append(input_field);
-        move_submit_button_to_bottom("student_info_button");
-        i++;
-    }
-
-    var course_info = ['course_name', 'course_level', 'credit_hours', 'course_type_name', 'grade_points'];
-    var j = 0;
-    function load_course_info(course_item) {
-        var input_field = document.createElement("INPUT");
-        input_field.setAttribute("type", "text");
-        input_field.setAttribute("name", course_info[j]);
-        input_field.setAttribute("value", course_item);
-        document.body.append(input_field);
-        move_submit_button_to_bottom("student_info_button");
-        j++;
-    }
-
-    function add_course_to_form() {
-        var x = 0;
-        var course_form = document.getElementById("course_form");
-        for(item in course_info) {
-            var input_field = document.createElement("INPUT");
-            input_field.setAttribute("type", "text");
-            input_field.setAttribute("value", course_info[x]);
-            input_field.setAttribute("name", course_info[x]);
-            course_form.appendChild(input_field);
-            x++;
-        }
-        course_form.appendChild(document.createElement("br"));
-        move_submit_button_to_bottom("course_form_button");
-    }
-
-    function move_submit_button_to_bottom(elementId) {
-        var submit_button = document.getElementById(elementId);
-        var parent_element = submit_button.parentElement;
-        parent_element.removeChild(submit_button);
-        parent_element.appendChild(submit_button);
-    }
-</script>
 
 <H1>{{first_name}}'s account details</H1>
 <br>
 
 <form id="student_info_form" method="post" action="/edit_account_student_info_post">
     <input id="student_info_button" class="btn btn-primary" type="submit" value="Save Changes">
-    {% for item in student_info %}
     <script type="text/javascript">
-            load_student_info('{{item}}')
+            var student_info = [];
     </script>
+    {% for item in student_info %}
+        <script type="text/javascript">student_info.push(['{{item}}']);</script>
     {% endfor %}
+    <script type="text/javascript">load_student_info(student_info)</script>
 </form>
 <script>
         move_submit_button_to_bottom("student_info_button");
@@ -79,6 +33,16 @@
 <br>
 <form id="course_form" method="post" action="/edit_account_course_info_post">
     <input id="course_form_button" class="btn btn-primary" type="submit" value="Save Changes">
+    <select name="Course Type">
+        <option value="1">Aesthetic Interpretation</option>
+        <option value="2">Empirical and Quantitative Reasoning</option>
+        <option value="3">Ethical Reasoningand Responsibility</option>
+        <option value="4">Global Issuesand Perspectives</option>
+        <option value="5">Historical Perspectives</option>
+        <option value="6">Human Diversity within the US</option>
+        <option value="7">Natural and Physical Sciences</option>
+        <option value="8">Social Sciences</option>
+    </select>
     {% for item in data %}
     <script type="text/javascript">
         load_course_info('{{item}}');
