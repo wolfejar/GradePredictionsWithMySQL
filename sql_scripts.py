@@ -9,8 +9,7 @@ class SQL:
             host=sys.argv[1],
             user=sys.argv[2],
             passwd=sys.argv[3],
-            auth_plugin='mysql_native_password',
-            database=sys.argv[4]
+            database="CollegeStateUniversity"
         )
         self.mydb.autocommit = True
         self.my_cursor = self.mydb.cursor()
@@ -88,4 +87,12 @@ class SQL:
             FROM Student S
             Where S.StudentId = {};
         '''.format(student_id))
+        return self.my_cursor.fetchone()
+
+    def get_student_grades_by_course(self, course_id):
+        self.my_cursor.execute('''
+            SELECT CS.GradePoints
+            FROM CourseStudent CS
+            WHERE CS.CourseId = {}
+        '''.format(course_id))
         return self.my_cursor.fetchone()
