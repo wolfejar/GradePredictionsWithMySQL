@@ -5,13 +5,18 @@
     <title>Sign In</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href='../static/login.css'>
 </head>
 <body>
-<h1>Sign In</h1><br>
-<form method="post" action="/sign_in_post">
-    Student Email:<input type="text" name="email">
-    Password: <input type="text" name="password">
-    <input class="btn btn-primary" type="submit" value="submit">
-</form>
+<div class="container">
+    <form class="form-signin" method="post" action="/sign_in_post">
+        <h2 class="form-signin-heading">Sign in</h2>
+        <label for="inputUserEmail" class="sr-only">User Email</label>
+        <input type="text" id="inputUserEmail" name="email" class="form-control" placeholder="User Email" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+        <input class="btn btn-lg btn-primary btn-block" type="submit" value="Sign in">
+    </form>
+</div>
 </body>
 </html>

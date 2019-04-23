@@ -13,7 +13,7 @@ sql = SQL()
 @application.route('/')
 @application.route('/index')
 def home():
-    return render_template('landing.html')
+    return render_template('index.html')
 
 
 @application.route('/sign_up_get', methods=['GET'])
