@@ -41,25 +41,30 @@ class SQL:
         join CourseType CT on CT.CourseTypeId = C.CourseTypeId;''')
         return self.my_cursor.fetchmany(how_many)
 
-    def sign_in(self, username, raw):
-        return pbkdf2_sha256.verify(raw, self.get_hashed(username))
+    def sign_in(self, email, raw):
+        row = self.get_hashed(email)
+        if row is None:
+            return False
+        else:
+            return pbkdf2_sha256.verify(raw, row)
 
-    def get_hashed(self, username):
+    def get_hashed(self, email):
         self.my_cursor.execute('''
-            SELECT S.StudentPassword
+            SELECT S.HashedPass
             From Student S
-            Where S.StudentId = '{}'
-        '''.format(username))
+            Where S.Email = '{}'
+        '''.format(email))
+
         return self.my_cursor.fetchone()[0]
 
     def get_home_info(self, username):
         self.my_cursor.execute('''
-            SELECT C.CourseName, C.CourseLevel, C.CreditHours, CT.CourseTypeName, concat(CS.GradePoints, '%') 
+            SELECT CT.CourseTypeName, C.CourseLevel, C.CreditHours, CT.CourseTypeName, CS.GradePercentage
             FROM Student S
             Join CourseStudent CS on CS.StudentId = S.StudentId
             Join Course C on C.CourseId = CS.CourseId
             Join CourseType CT on C.CourseTypeId = CT.CourseTypeId
-            Where S.StudentId = {}
+            Where S.Email = '{}'
             '''.format(username))
         return self.my_cursor.fetchall()
 
@@ -67,15 +72,15 @@ class SQL:
         self.my_cursor.execute('''
             SELECT S.FirstName
             FROM Student S
-            where S.StudentId = {}   
+            where S.Email = '{}'   
         '''.format(username))
         return self.my_cursor.fetchone()[0]
 
-    def create_student(self, first_name, last_name, on_campus, is_working, gpa, password):
+    def create_student(self, password, first_name, last_name, on_campus, is_working, gpa, institutionId, email):
         self.my_cursor.execute('''
-            INSERT INTO Student(FirstName, LastName, OnCampus, IsWorking, GPA, StudentPassword)
-            VALUES ('{}' ,'{}', {}, {}, {}, '{}');
-        '''.format(first_name, last_name, on_campus, is_working, gpa, password))
+            INSERT INTO Student(HashedPass, FirstName, LastName, OnCampus, IsWorking, GPA, InstitutionId, Email)
+            VALUES ('{}' ,'{}', '{}', {}, {}, {}, {}, '{}');
+        '''.format(password, first_name, last_name, on_campus, is_working, gpa, institutionId, email))
         self.my_cursor.execute('''
             SELECT LAST_INSERT_ID();
         ''')  # This wil be SELECT SCOPE_IDENTITY with SQLServer
