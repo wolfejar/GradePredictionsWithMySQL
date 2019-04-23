@@ -1,5 +1,5 @@
-# GradePredictionsWithMySQL  
-This is a python web application which uses tensorflow to predict student grades based on mock data from a MySQL database.
+# GradePredictionsWithSQLServer  
+This is a python web application which uses tensorflow to predict student grades based on mock data from a SQLServer database.
 It uses Flask as a framework to allow for easy data entry and display of results.
 
 ## Dependencies
@@ -8,6 +8,7 @@ pip install tensorflow
 pip install Flask  
 pip install matplotlib
 ```
+*** We are currently transitioning to SQLServer
 NOTE: In order to train a new model with TensorFlow, you must have MySQL installed and running on your system. The database required for training this model is available at
 https://github.com/wolfejar/SchoolDatabaseMySQL
 
