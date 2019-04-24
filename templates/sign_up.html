@@ -5,22 +5,30 @@
     <title>Sign Up</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href='../static/login.css'>
 </head>
 <body>
 <H1>Enter a password</H1><br>
 <p>We will generate an ID for you to use as a username and display this on the next page.</p>
 <br>
-<form method="post" action="/sign_up_post">
-    First Name: <input type="text" name="firstname"><br>
-    Last Name: <input type="text" name="lastname"><br>
-    Check if you live on campus: <input type="checkbox" name="oncampus"><br>
-    Check if you are currently working a part time or full time job: <input type="checkbox" name="isworking"><br>
-    Enter your current GPA: <input type="number" step="0.01" name="gpa"><br>
-    Password: <input type="text" name="password"><br>
-    Institution Id: <input type="number" name="institutionId"><br>
-    email: <input type="text" name="email"><br>
-    <input class="btn btn-primary" type="submit" value="submit">
-</form>
+<div class="container">
+    <form class="form-signin" method="post" action="/sign_up_post">
+        <h2>Sign Up</h2>
+        <label for="firstName" class="sr-only">First Name</label>
+        <input type="text" id="firstName" name="firstname" class="form-control" placeholder="First Name" required autofocus>
+        <label for="lastname" class="sr-only">LastName</label>
+        <input type="text" id="lastname" name="lastname" class="form-control" placeholder="Last Name" required>
+        Check if you live on campus: <input type="checkbox" name="oncampus"><br>
+        Check if you are currently working a part time or full time job: <input type="checkbox" name="isworking"><br>
+        Enter your current GPA: <input type="number" step="0.01" name="gpa"><br>
+        Password: <input type="text" name="password"><br>
+        Institution Id: <input type="number" name="institutionId"><br>
+        email: <input type="text" name="email"><br>
+        <input class="btn btn-primary" type="submit" value="submit">
+    </form>
+</div>
+
+
 
 <h3>All information is anonymous</h3>
 </body>
