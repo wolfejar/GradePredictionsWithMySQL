@@ -3,16 +3,17 @@ from flask import Flask, render_template, request, session
 import current_model
 from sql_scripts import SQL
 from passlib.hash import pbkdf2_sha256
+from flask_bootstrap import Bootstrap
 
 application = Flask(__name__)
-
+Bootstrap(application)
 sql = SQL()
 
 
 @application.route('/')
 @application.route('/index')
 def home():
-    return render_template('landing.html')
+    return render_template('index.html')
 
 
 @application.route('/sign_up_get', methods=['GET'])
@@ -28,8 +29,11 @@ def sign_up_post():
     is_working = request.form.get('isworking') is not None
     gpa = request.form.get('gpa')
     hashed_pass = pbkdf2_sha256.hash(request.form['password'])
-    username = sql.create_student(first_name, last_name, bool(on_campus), bool(is_working), float(gpa), hashed_pass)[0]
-    session['username'] = username
+    instutionId = request.form.get('institutionId')
+    email = request.form.get('email')
+    username = sql.create_student(hashed_pass, first_name, last_name, bool(on_campus),
+                                  bool(is_working), float(gpa), instutionId, email)[0]
+    session['email'] = email
     return account_home()
 
 
@@ -41,10 +45,10 @@ def sign_in_get():
 @application.route('/sign_in_post', methods=['POST'])
 def sign_in_post():
     if request.method == 'POST':
-        username = request.form['username']
+        email = request.form['email']
         raw = request.form['password']
-        if sql.sign_in(username, raw):
-            session['username'] = username
+        if sql.sign_in(email, raw):
+            session['email'] = email
             return account_home()
         else:
             return sign_in_get()
@@ -78,8 +82,8 @@ def edit_account_course_info_post():
 
 @application.route('/account_home', methods=['GET', 'POST'])
 def account_home():
-    data = sql.get_home_info(session['username'])
-    firstname = sql.get_student_first_name(session['username'])
+    data = sql.get_home_info(session['email'])
+    firstname = sql.get_student_first_name(session['email'])
     return render_template('account_home.html', firstname=firstname, data=data)
 
 

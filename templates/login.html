@@ -1,0 +1,25 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='login.css')}}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <form class="form-signin" method="post" action="/sign_in_post">
+        <h2 class="form-signin-heading">Sign in</h2>
+        <label for="inputUserEmail" class="sr-only">User Email</label>
+        <input type="text" id="inputUserEmail" name="email" class="form-control" placeholder="UserEmail" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+        <input class="btn btn-lg btn-primary btn-block" type="submit" value="Sign in">
+    </form>
+
+</div> <!-- /container -->
+{% endblock %}
