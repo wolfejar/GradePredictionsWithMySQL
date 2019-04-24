@@ -29,10 +29,10 @@ def sign_up_post():
     is_working = request.form.get('isworking') is not None
     gpa = request.form.get('gpa')
     hashed_pass = pbkdf2_sha256.hash(request.form['password'])
-    instutionId = request.form.get('institutionId')
+    instution_id = request.form.get('institutionId')
     email = request.form.get('email')
-    username = sql.create_student(hashed_pass, first_name, last_name, bool(on_campus),
-                                  bool(is_working), float(gpa), instutionId, email)[0]
+    sql.create_student(hashed_pass, first_name, last_name, int(on_campus), int(is_working), float(gpa),
+                       instution_id, email)
     session['email'] = email
     return account_home()
 
@@ -56,15 +56,15 @@ def sign_in_post():
 
 @application.route('/logout', methods=['GET', 'POST'])
 def logout():
-    session.pop('username', None)
+    session.pop('email', None)
     return home()
 
 
 @application.route('/edit_account_info_get', methods=['GET'])
 def edit_account_info_get():
-    course_data = sql.get_home_info(session['username'])
-    first_name = sql.get_student_first_name(session['username'])
-    student_info = sql.get_student_info_by_id(session['username'])
+    course_data = sql.get_home_info(session['email'])
+    first_name = sql.get_student_first_name(session['email'])
+    student_info = sql.get_student_info_by_email(session['email'])
     return render_template('edit_account.html', data=course_data, first_name=first_name, student_info=student_info)
 
 
