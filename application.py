@@ -62,9 +62,9 @@ def logout():
 
 @application.route('/edit_account_info_get', methods=['GET'])
 def edit_account_info_get():
-    course_data = sql.get_home_info(session['username'])
-    first_name = sql.get_student_first_name(session['username'])
-    student_info = sql.get_student_info_by_id(session['username'])
+    course_data = sql.get_home_info(session['email'])
+    first_name = sql.get_student_first_name(session['email'])
+    student_info = sql.get_student_info_by_id(session['email'])
     return render_template('edit_account.html', data=course_data, first_name=first_name, student_info=student_info)
 
 

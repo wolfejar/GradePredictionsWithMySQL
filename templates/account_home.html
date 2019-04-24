@@ -1,17 +1,99 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{firstname}} Home</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
+{% extends "bootstrap/base.html" %}
 
-<body>
-    <br>
-    <h2>Welcome {{firstname}}, you are signed in!</h2>
+{% block title %}
+Demo App
+{% endblock %}
 
-    <br>
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='starter-template.css')}}">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    .imgbox {
+        display: grid;
+        height: 100%;
+    }
+    .center-fit {
+        max-width: 100%;
+        max-height: 100vh;
+        margin: auto;
+    }
+    .tab {
+        float: left;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+        width: fit-content;
+        height: fit-content%;
+    }
+
+    /* Style the buttons inside the tab */
+    .tab button {
+        display: block;
+        background-color: inherit;
+        color: black;
+        padding: 22px 16px;
+        width: 100%;
+        border: none;
+        outline: none;
+        text-align: left;
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 17px;
+    }
+
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+        background-color: #ddd;
+    }
+
+    /* Create an active/current "tab button" class */
+    .tab button.active {
+        background-color: #ccc;
+    }
+
+    /* Style the tab content */
+    .tabcontent {
+        float: left;
+        padding: 12px;
+        border: 1px solid #ccc;
+        width: 70%;
+        height: auto;
+        margin-bottom: 15px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-inverse navbar-fixed-top" >
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Grade Predictor</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="/logout">Logout</a></li>
+                <li><a href="/sign_up_get">Sign Up</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="imgbox">
+    <img class="center-fit" src='../static/GradePredictor.png'>
+</div><!-- /.container -->
+
+<div class="container" id="welcome" style="height: 400px">
+    <h2>Welcome {{firstname}}, you are signed in!!</h2>
 
     {% for item in data %}
     <p> {{ item }} </p>
@@ -21,8 +103,66 @@
         <input class="btn btn-primary" type="submit" value="Edit account information">
     </form>
     <br>
-    <form method="post" action="/logout">
-        <input class="btn btn-primary" type="submit" value="Log Out">
-    </form>
-</body>
-</html>
+
+    <div class="tab">
+        <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">Grade Predictor</button>
+        <button class="tablinks" onclick="openCity(event, 'Paris')">Course Report</button>
+        <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button>
+    </div>
+
+    <div id="London" class="tabcontent">
+        <h3>Grade Predictor</h3>
+        <form method="post" action="/send">
+                GPA: <input type="text" name="gpa"><br>
+                How many credit hours are you currently taking? <input type="text" name="totalcredithours"><br>
+                Do you live on campus? <input type="checkbox" name="oncampus"><br>
+                Will you be working outside of class? <input type="checkbox" name="isworking"><br>
+                Do you hold a position in a club/activity? <input type="checkbox" name="hasposition"><br>
+                How many credit hours is this course for? <input type="text" name="coursecredithours"><br>
+                What level is this course? (i.e. Math 101 -> 101) <input type="text" name="courselevel"><br>
+                <br><h4>K-State 8 - Check all that apply for this course:</h4>
+                Aesthetic Interpetation <input type="checkbox" name="AestheticInterpetation"><br>
+                Empirical and Quantitative Reasoning <input type="checkbox" name="EmpiricalandQuantitativeReasoning"><br>
+                Ethical Reasoning and Responsibility <input type="checkbox" name="EthicalReasoningandResponsibility"><br>
+                Global Issues and Perspectives <input type="checkbox" name="GlobalIssuesandPerspectives"><br>
+                Historical Perspectives <input type="checkbox" name="HistoricalPerspectives"><br>
+                Human Diversity within the US <input type="checkbox" name="HumanDiversitywithintheUS"><br>
+                Natural and Physical Sciences <input type="checkbox" name="NaturalandPhysicalSciences"><br>
+                Social Sciences <input type="checkbox" name="SocialSciences"><br>
+            <input class="btn btn-primary" type="submit" value="submit">
+        </form>
+    </div>
+
+    <div id="Paris" class="tabcontent">
+        <h3>Course Report</h3>
+        <p>It will generate a performance report of students in past.</p>
+    </div>
+
+    <div id="Tokyo" class="tabcontent">
+        <h3>Instructor Report</h3>
+        <p>It will generate student past performances report in the past under specific instructor</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+<script>
+    function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+</script>
+{% endblock %}

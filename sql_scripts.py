@@ -86,12 +86,12 @@ class SQL:
         ''')  # This wil be SELECT SCOPE_IDENTITY with SQLServer
         return self.my_cursor.fetchone()
 
-    def get_student_info_by_id(self, student_id):
+    def get_student_info_by_id(self, student_email):
         self.my_cursor.execute('''
             Select S.FirstName, S.LastName, S.StudentId, S.GPA, S.OnCampus, S.IsWorking
             FROM Student S
-            Where S.StudentId = {};
-        '''.format(student_id))
+            Where S.Email = '{}';
+        '''.format(student_email))
         return self.my_cursor.fetchone()
 
     def get_student_grades_by_course(self, course_id):
