@@ -32,7 +32,7 @@ def sign_up_post():
     instution_id = request.form.get('institutionId')
     email = request.form.get('email')
     sql.create_student(hashed_pass, first_name, last_name, int(on_campus), int(is_working), float(gpa),
-                       instution_id, email)
+                       email)
     session['email'] = email
     return account_home()
 

@@ -28,8 +28,7 @@ class SQL:
         case when CT.CourseTypeId = 7 then 1 else 0 end as NaturalandPhysicalSciences,
         case when CT.CourseTypeId = 8 then 1 else 0 end as SocialSciences
         from (
-            Select S.StudentId, S.FirstName, S.LastName, SUM(C.CreditHours) as TotalCreditHours,
-            S.GPA, S.OnCampus, S.IsWorking
+            Select SUM(C.CreditHours) as TotalCreditHours, S.GPA, S.OnCampus, S.IsWorking
             from CourseStudent CS
             join Course C on C.CourseId = CS.CourseId
             join Student S on S.StudentId = CS.StudentId
@@ -76,11 +75,11 @@ class SQL:
         '''.format(email))
         return self.my_cursor.fetchone()[0]
 
-    def create_student(self, password, first_name, last_name, on_campus, is_working, gpa, institution_id, email):
+    def create_student(self, password, first_name, last_name, on_campus, is_working, gpa, email):
         self.my_cursor.execute('''
-            INSERT INTO Student(HashedPass, FirstName, LastName, OnCampus, IsWorking, GPA, InstitutionId, Email)
-            VALUES ('{}' ,'{}', '{}', {}, {}, {}, {}, '{}');
-        '''.format(password, first_name, last_name, on_campus, is_working, gpa, institution_id, email))
+            INSERT INTO Student(HashedPass, FirstName, LastName, OnCampus, IsWorking, GPA, Email)
+            VALUES ('{}' ,'{}', '{}', {}, {}, {}, '{}');
+        '''.format(password, first_name, last_name, on_campus, is_working, gpa, email))
 
     def get_student_info_by_email(self, email):
         self.my_cursor.execute('''
