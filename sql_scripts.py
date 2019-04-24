@@ -1,17 +1,17 @@
-import mysql.connector
+import pymssql
 import sys
 from passlib.hash import pbkdf2_sha256
 
 
 class SQL:
     def __init__(self, ):
-        self.mydb = mysql.connector.connect(
+        self.mydb = pymssql.connect(
             host=sys.argv[1],
             user=sys.argv[2],
-            passwd=sys.argv[3],
-            database="CollegeStateUniversity"
+            password=sys.argv[3],
+            database=sys.argv[4]
         )
-        self.mydb.autocommit = True
+        # self.mydb.autocommit = True
         self.my_cursor = self.mydb.cursor()
 
     def get_all_course_students(self, how_many):
