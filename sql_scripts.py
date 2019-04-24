@@ -1,17 +1,17 @@
-import mysql.connector
+import pymssql
 import sys
 from passlib.hash import pbkdf2_sha256
 
 
 class SQL:
     def __init__(self, ):
-        self.mydb = mysql.connector.connect(
+        self.mydb = pymssql.connect(
             host=sys.argv[1],
             user=sys.argv[2],
-            passwd=sys.argv[3],
-            database="CollegeStateUniversity"
+            password=sys.argv[3],
+            database=sys.argv[4]
         )
-        self.mydb.autocommit = True
+        self.mydb.autocommit(True)
         self.my_cursor = self.mydb.cursor()
 
     def get_all_course_students(self, how_many):
@@ -57,7 +57,7 @@ class SQL:
 
         return self.my_cursor.fetchone()[0]
 
-    def get_home_info(self, username):
+    def get_home_info(self, email):
         self.my_cursor.execute('''
             SELECT CT.CourseTypeName, C.CourseLevel, C.CreditHours, CT.CourseTypeName, CS.GradePercentage
             FROM Student S
@@ -65,34 +65,30 @@ class SQL:
             Join Course C on C.CourseId = CS.CourseId
             Join CourseType CT on C.CourseTypeId = CT.CourseTypeId
             Where S.Email = '{}'
-            '''.format(username))
+            '''.format(email))
         return self.my_cursor.fetchall()
 
-    def get_student_first_name(self, username):
+    def get_student_first_name(self, email):
         self.my_cursor.execute('''
             SELECT S.FirstName
             FROM Student S
             where S.Email = '{}'   
-        '''.format(username))
+        '''.format(email))
         return self.my_cursor.fetchone()[0]
 
-    def create_student(self, password, first_name, last_name, on_campus, is_working, gpa, institutionId, email):
+    def create_student(self, password, first_name, last_name, on_campus, is_working, gpa, institution_id, email):
         self.my_cursor.execute('''
             INSERT INTO Student(HashedPass, FirstName, LastName, OnCampus, IsWorking, GPA, InstitutionId, Email)
             VALUES ('{}' ,'{}', '{}', {}, {}, {}, {}, '{}');
-        '''.format(password, first_name, last_name, on_campus, is_working, gpa, institutionId, email))
-        self.my_cursor.execute('''
-            SELECT LAST_INSERT_ID();
-        ''')  # This wil be SELECT SCOPE_IDENTITY with SQLServer
-        return self.my_cursor.fetchone()
+        '''.format(password, first_name, last_name, on_campus, is_working, gpa, institution_id, email))
 
-    def get_student_info_by_id(self, student_email):
+    def get_student_info_by_email(self, email):
         self.my_cursor.execute('''
             Select S.FirstName, S.LastName, S.StudentId, S.GPA, S.OnCampus, S.IsWorking
             FROM Student S
             Where S.Email = '{}';
-        '''.format(student_email))
-        return self.my_cursor.fetchone()
+        '''.format(email))
+        return self.my_cursor.fetchone()[0]
 
     def get_student_grades_by_course(self, course_id):
         self.my_cursor.execute('''
