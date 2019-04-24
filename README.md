@@ -5,21 +5,29 @@ It uses Flask as a framework to allow for easy data entry and display of results
 ## Dependencies
 ```bash
 pip install tensorflow  
-pip install Flask  
+pip install Flask 
+pip install flask_bootstrap
 pip install matplotlib
-```
-*** We are currently transitioning to SQLServer
-NOTE: In order to train a new model with TensorFlow, you must have MySQL installed and running on your system. The database required for training this model is available at
-https://github.com/wolfejar/SchoolDatabaseMySQL
-
-```bash
-pip install mysqlclient
+pip install Cython
+pip install pymssql
 ```
 
-## Running the Web App (No MySQL Required)
+NOTE: You must have Microsoft SQL Server running on your system. The database required for training this model is available at
+https://github.com/wolfejar/SchoolDatabaseSQLServer  
+
+### Running on MacOS  
+
+Instructions to run SQL Server with docker: https://adamwilbert.com/blog/2018/3/26/get-started-with-sql-server-on-macos-complete-with-a-native-gui  
 
 ```bash
-python application.py
+brew install unixodbc
+brew install freetds
+```
+
+## Running the Web App
+
+```bash
+python application.py [host][user][password][database]
 ```
 
 http://127.0.0.1:5000/
