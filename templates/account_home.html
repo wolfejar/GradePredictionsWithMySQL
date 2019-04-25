@@ -182,8 +182,8 @@ Demo App
             <input class="btn btn-primary" type="submit" value="submit">
         </form>
     </div>
-    <div id="predictionReport">
-        <p id="fun"></p>
+    <div  id="predictionReport">
+        <p id="fun">yo</p>
     </div>
 
 </div>
@@ -207,19 +207,11 @@ Demo App
         }
         document.getElementById(cityName).style.display = "block";
         evt.currentTarget.className += " active";
+        display(false);
     }
 
     // Get the element with id="defaultOpen" and click on it
     document.getElementById("defaultOpen").click();
-
-    function generate(destElem) {
-        $.post('/fun', {
-        }).done(function(response) {
-            $(destElem).text(response['text'])
-        }).fail(function() {
-            $(destElem).text("Error: Could not contact server.");
-        });
-    }
 
     function fun(){
 
@@ -231,11 +223,18 @@ Demo App
             data : $("#predictionForm").serialize(), // post data || get data
             success : function(response) {
                 $('#fun').text(response['text']);
-            }
+                display(true);         }
         })
     }
 
-
+    function display(option) {
+        var x = document.getElementById("fun");
+        if (option) {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
 
 </script>
 {% endblock %}
