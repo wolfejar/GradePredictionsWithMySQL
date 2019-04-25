@@ -101,3 +101,12 @@ class SQL:
             WHERE CS.CourseId = {}
         '''.format(course_id))
         return self.my_cursor.fetchone()
+
+    def get_student_info_by_course_id(self, course_id):
+        self.my_cursor.execute('''
+                    SELECT *
+                    FROM CourseStudent CS
+                    JOIN Student S on S.StudentId = CS.StudentId
+                    WHERE CS.CourseId = {}
+                '''.format(course_id))
+        return self.my_cursor.fetchall()

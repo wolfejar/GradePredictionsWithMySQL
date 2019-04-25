@@ -90,10 +90,20 @@ def account_home():
     return render_template('account_home.html', firstname=firstname, data=data)
 
 
-@application.route('/fun', methods=['POST'])
-def fun():
-    a = request.form['gpa']
-    return jsonify({'text':'jie'})
+@application.route('/course_report', methods=['POST'])
+def course_report():
+    course_id = int(request.form.get('course_id'))
+    data = sql.get_student_info_by_course_id(course_id)
+    grade_percentage_arr = []
+    on_campus_arr = []
+    is_working_arr = []
+    gpa_arr = []
+    institution_arr = []
+    for student in data:
+        grade_percentage_arr.append(student[2])
+        on_campus_arr.append(student[8])
+        # is_working_arr.append(student[])
+    return account_home()
 
 
 @application.route('/send', methods=['POST'])
