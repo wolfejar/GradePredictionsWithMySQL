@@ -1,0 +1,30 @@
+body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #eee;
+}
+
+.form-sign-up {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+.form-sign-up .form-sign-up-heading,
+.form-sign-up .checkbox {
+    margin-bottom: 10px;
+}
+.form-sign-up .checkbox {
+    font-weight: normal;
+}
+.form-sign-up .form-control {
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+}
+.form-sign-up .form-control:focus {
+    z-index: 10;
+}
