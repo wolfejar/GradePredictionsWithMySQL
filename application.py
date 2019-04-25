@@ -98,14 +98,16 @@ def edit_account_course_info_post():
 @application.route('/account_home', methods=['GET', 'POST'])
 def account_home():
     data = sql.get_home_info(session['email'])
-    firstname = sql.get_student_first_name(session['email'])
+
     studentInfo = sql.get_student_info_by_email(session['email'])
-    gpa = studentInfo[0]
-    if studentInfo[1]:
+    firstname = studentInfo[0]
+    lastname = studentInfo[1]
+    gpa = studentInfo[4]
+    if studentInfo[2]:
         onCampus = 'checked'
     else:
         onCampus = ''
-    if studentInfo[2]:
+    if studentInfo[3]:
         working = 'checked'
     else:
         working=''

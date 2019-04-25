@@ -88,7 +88,7 @@ class SQL:
 
     def get_student_info_by_email(self, email):
         self.my_cursor.execute('''
-            Select S.GPA, S.OnCampus, S.IsWorking
+            Select S.FirstName,S.LastName, S.OnCampus, S.IsWorking, S.GPA
             FROM Student S
             Where S.Email = '{}';
         '''.format(email))

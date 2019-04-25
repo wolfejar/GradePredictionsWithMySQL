@@ -51,18 +51,18 @@
     document.getElementById("firstname").value = student_info[0]
     document.getElementById("lastname").value = student_info[1]
 
-    document.getElementById("gpa").value = student_info[3]
-    document.getElementById("oncampus").value = student_info[4]
-    document.getElementById("isworking").value = student_info[5]
+    document.getElementById("gpa").value = student_info[4]
+    document.getElementById("oncampus").value = student_info[2]
+    document.getElementById("isworking").value = student_info[3]
     document.getElementById("firstname").value = student_info[0]
     document.getElementById("lastname").placeholder = student_info[1]
 
-    document.getElementById("gpa").placeholder = student_info[3]
-    if(student_info[4]==1)
+    document.getElementById("gpa").placeholder = student_info[4]
+    if(student_info[2]==1)
         document.getElementById("oncampus").checked = true
     else
         document.getElementById("oncampus").checked = false
-    if(student_info[5]==1)
+    if(student_info[3]==1)
         document.getElementById("isworking").checked = true
     else
         document.getElementById("isworking").checked = false
