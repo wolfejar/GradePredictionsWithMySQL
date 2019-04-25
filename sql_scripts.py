@@ -15,7 +15,7 @@ class SQL:
         self.my_cursor = self.mydb.cursor()
 
     def get_all_course_students(self, how_many):
-        self.my_cursor.execute('''Select CS.GradePoints, info.GPA as StudentGPA,
+        self.my_cursor.execute('''Select CS.GradePercentage, info.GPA as StudentGPA,
         info.TotalCreditHours as StudentTotalCreditHours, info.OnCampus as StudentOnCampus,
         info.IsWorking as StudentIsWorking, coalesce(AST.HasPosition, 0) as StudentHasActivityPosition,
         C.CreditHours as CourseCreditHours, C.CourseLevel,
@@ -26,18 +26,21 @@ class SQL:
         case when CT.CourseTypeId = 5 then 1 else 0 end as HistoricalPerspectives,
         case when CT.CourseTypeId = 6 then 1 else 0 end as HumanDiversitywithintheUS,
         case when CT.CourseTypeId = 7 then 1 else 0 end as NaturalandPhysicalSciences,
-        case when CT.CourseTypeId = 8 then 1 else 0 end as SocialSciences
+        case when CT.CourseTypeId = 8 then 1 else 0 end as SocialSciences,
+        I.YearsTeaching, I.IsTenured, I.Degree
         from (
-            Select SUM(C.CreditHours) as TotalCreditHours, S.GPA, S.OnCampus, S.IsWorking
+            Select SUM(C.CreditHours) as TotalCreditHours, S.StudentId, S.GPA, S.OnCampus, S.IsWorking
             from CourseStudent CS
             join Course C on C.CourseId = CS.CourseId
             join Student S on S.StudentId = CS.StudentId
-            group by S.StudentId
+            group by S.StudentId, S.GPA, S.OnCampus, S.IsWorking
         ) as info
         left join ActivityStudent AST on AST.StudentId = info.StudentId 
         join CourseStudent CS on CS.StudentId = info.StudentId
         join Course C on C.CourseId = CS.CourseId
-        join CourseType CT on CT.CourseTypeId = C.CourseTypeId;''')
+        join CourseType CT on CT.CourseTypeId = C.CourseTypeId
+        join CourseInstructor CI on CI.CourseId = C.CourseId
+        join Instructor I on I.InstructorId = CI.InstructorId;''')
         return self.my_cursor.fetchmany(how_many)
 
     def sign_in(self, email, raw):

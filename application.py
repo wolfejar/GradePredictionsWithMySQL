@@ -70,7 +70,7 @@ def edit_account_info_get():
 
 @application.route('/edit_account_student_info_post', methods=['POST'])
 def edit_account_student_info_post():
-    request.form.get()
+    request.form.get('first_name')
     return account_home()
 
 

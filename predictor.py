@@ -6,7 +6,7 @@ import numpy as np
 
 sql = SQL()
 
-
+# normalizes data and creates a numpy matrix which can be fed into the model
 def build_list(arr):
     inputs = []
     outputs = []
@@ -23,6 +23,12 @@ def build_list(arr):
                 resulting_row.append(float(col) / 6.0)
             elif i == 7:
                 resulting_row.append(float(col) / 1000.0)
+            elif i == 16:
+                # years teaching
+                resulting_row.append(float(col) / 8.0)
+            elif i == 18:
+                # instructor degree
+                resulting_row.append(float(col) / 8.0)
             else:
                 resulting_row.append(float(col))
         inputs.append(resulting_row)
@@ -34,10 +40,12 @@ def build_list(arr):
 # int course credit hours, int course level,
 # bool aesthetic, bool empirical, bool ethical, bool global issue, bool historical, bool human diversity,
 # bool natural/physical sciences, bool social sciences
-input_rows, classifications = build_list(sql.get_all_course_students(4500))
+# int instructor_years_teaching, int instructor_tenured, int instructor_degree
+# Should train on 40k samples, but we know the pattern can be learned almost exactly using only a small portion
+input_rows, classifications = build_list(sql.get_all_course_students(4000))
 
 model = keras.Sequential([
-    keras.layers.Dense(15, activation=tf.nn.relu),
+    keras.layers.Dense(18, activation=tf.nn.relu),
     keras.layers.Dense(20, activation=tf.nn.relu),
     keras.layers.Dense(1)
   ])
