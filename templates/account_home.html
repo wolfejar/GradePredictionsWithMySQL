@@ -1,5 +1,5 @@
 {% extends "bootstrap/base.html" %}
-
+{% import "bootstrap/wtf.html" as wtf %}
 {% block title %}
 Demo App
 {% endblock %}
@@ -59,7 +59,16 @@ Demo App
         float: left;
         padding: 12px;
         border: 1px solid #ccc;
-        width: 70%;
+        width: auto;
+        height: auto;
+        margin-bottom: 15px;
+    }
+
+    .reportcontent{
+        float: left;
+        padding: 12px;
+        border: 1px solid #ccc;
+        width: auto;
         height: auto;
         margin-bottom: 15px;
     }
@@ -92,7 +101,7 @@ Demo App
     <img class="center-fit" src='../static/GradePredictor.png'>
 </div><!-- /.container -->
 
-<div class="container" id="welcome" style="height: 400px">
+<div class="container" id="welcome" style="height: 700px">
     <h2>Welcome {{firstname}}, you are signed in!!</h2>
 
     {% for item in data %}
@@ -112,7 +121,7 @@ Demo App
 
     <div id="London" class="tabcontent">
         <h3>Grade Predictor</h3>
-        <form method="post" action="/send">
+        <form id="predictionForm" action="javascript:fun();">
                 GPA: <input type="text" name="gpa"><br>
                 How many credit hours are you currently taking? <input type="text" name="totalcredithours"><br>
                 Do you live on campus? <input type="checkbox" name="oncampus"><br>
@@ -145,12 +154,19 @@ Demo App
         <h3>Instructor Report</h3>
         <p>It will generate student past performances report in the past under specific instructor</p>
     </div>
+    <div id="predictionReport">
+        <p id="fun"></p>
+    </div>
+
 </div>
 {% endblock %}
 
 {% block scripts %}
 {{super()}}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script>
 <script>
+
     function openCity(evt, cityName) {
         var i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tabcontent");
@@ -167,5 +183,31 @@ Demo App
 
     // Get the element with id="defaultOpen" and click on it
     document.getElementById("defaultOpen").click();
+
+    function generate(destElem) {
+        $.post('/fun', {
+        }).done(function(response) {
+            $(destElem).text(response['text'])
+        }).fail(function() {
+            $(destElem).text("Error: Could not contact server.");
+        });
+    }
+
+    function fun(){
+
+
+        $.ajax({
+            url: '/send', // url where to submit the request
+            type : "POST", // type of action POST || GET
+            dataType : 'json', // data type
+            data : $("#predictionForm").serialize(), // post data || get data
+            success : function(response) {
+                $('#fun').text(response['text']);
+            }
+        })
+    }
+
+
+
 </script>
 {% endblock %}
