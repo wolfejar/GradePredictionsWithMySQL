@@ -1,13 +1,22 @@
 import numpy as np
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, jsonify
 import current_model
 from sql_scripts import SQL
 from passlib.hash import pbkdf2_sha256
 from flask_bootstrap import Bootstrap
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField
+from wtforms.validators import InputRequired, Email, Length
 
 application = Flask(__name__)
 Bootstrap(application)
 sql = SQL()
+application.app_context()
+form = ""
+
+class LoginForm(FlaskForm):
+    tuition = StringField('Tuition')
+
 
 
 @application.route('/')
@@ -80,12 +89,22 @@ def edit_account_course_info_post():
     return account_home()
 
 
+
 @application.route('/account_home', methods=['GET', 'POST'])
 def account_home():
+    global form
+    form = LoginForm()
     data = sql.get_home_info(session['email'])
     firstname = sql.get_student_first_name(session['email'])
-    return render_template('account_home.html', firstname=firstname, data=data)
+    block = 'style="display: block"'
+    none = 'style="display: none"'
+    return render_template('account_home.html', firstname=firstname, data=data,
+                           form=form)
 
+@application.route('/fun', methods=['POST'])
+def fun():
+    a = request.form['gpa']
+    return jsonify({'text':'jie'})
 
 @application.route('/send', methods=['POST'])
 def send():
@@ -130,7 +149,9 @@ def send():
         else:
             letter_grade = 'A'
 
-        return render_template('result.html', numerical_grade=numerical_grade, letter_grade=letter_grade)
+        message = 'You grade will be' + letter_grade + ' ' + str(numerical_grade)
+
+        return jsonify({'text':message})
 
 
 if __name__ == '__main__':
