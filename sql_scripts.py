@@ -80,11 +80,11 @@ class SQL:
         '''.format(email))
         return self.my_cursor.fetchone()[0]
 
-    def create_student(self, password, first_name, last_name, on_campus, is_working, gpa, email):
+    def create_student(self, password, first_name, last_name, on_campus, is_working, gpa, email, institution_id):
         self.my_cursor.execute('''
-            INSERT INTO Student(HashedPass, FirstName, LastName, OnCampus, IsWorking, GPA, Email)
-            VALUES ('{}' ,'{}', '{}', {}, {}, {}, '{}');
-        '''.format(password, first_name, last_name, on_campus, is_working, gpa, email))
+            INSERT INTO Student(HashedPass, FirstName, LastName, OnCampus, IsWorking, GPA, Email, InstitutionId)
+            VALUES ('{}' ,'{}', '{}', {}, {}, {}, '{}', {});
+        '''.format(password, first_name, last_name, on_campus, is_working, gpa, email, institution_id))
 
     def get_student_info_by_email(self, email):
         self.my_cursor.execute('''

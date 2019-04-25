@@ -6,6 +6,7 @@ import numpy as np
 
 sql = SQL()
 
+
 # normalizes data and creates a numpy matrix which can be fed into the model
 def build_list(arr):
     inputs = []
