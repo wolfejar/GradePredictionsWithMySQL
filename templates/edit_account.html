@@ -4,30 +4,82 @@
     <meta charset="UTF-8">
     <title>Edit Account</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href='../static/sign_up.css'>
     <script type=text/javascript src="../static/js/edit_account_scripts.js"></script>
 </head>
 
 <body>
 
-<H1>{{first_name}}'s account details</H1>
+
 <br>
 
-<form id="student_info_form" method="post" action="/edit_account_student_info_post">
-    <input id="student_info_button" class="btn btn-primary" type="submit" value="Save Changes">
-    <script type="text/javascript">
-            var student_info = [];
-    </script>
-    {% for item in student_info %}
-        <script type="text/javascript">student_info.push(['{{item}}']);</script>
-    {% endfor %}
-    <script type="text/javascript">load_student_info(student_info)</script>
+<form id="form-sign-up" class="form-sign-up" method="post" action="/edit_account_student_info_post">
+    <H1>{{first_name}}'s</H1>
+    <label for="firstname">First Name: </label>
+    <input type="text" id="firstname" name="firstname" class="form-control" s>
+    <label for="lastname">Last Name: </label>
+    <input type="text" id="lastname" name="lastname" class="form-control" s>
+    <label for="gpa" >GPA: </label>
+    <input type="number" max="4" min="0" id="gpa" name="gpa" class="form-control" s>
+    <label for="oncampus">Live on campus: <input id ="oncampus"type="checkbox" name="oncampus"><br></label>
+    <label for="isworking">Currently working a part time or full time job: <input id="isworking"type="checkbox" name="isworking"><br></label>
+<input id="student_info_button" class="btn btn-primary" type="submit" value= "Change" >
 </form>
-<script>
-        move_submit_button_to_bottom("student_info_button");
+
+<!--array for info-->
+<script type="text/javascript">
+    var student_info = [];
 </script>
+
+<!--<script type="text/javascript">load_student_info(student_info)</script>-->
+
+<!--<input type="hidden" id="info" name="info" value = "">
+<script>
+    var test = new Array();
+    test = return_student_info(student_info);
+    document.getElementById("info").value = test;
+</script>-->
+
+<!--get initial info-->
+{% for item in student_info %}
+<script type="text/javascript">student_info.push(['{{item}}']);</script>
+{% endfor %}
+
+<!--get new info-->
+<script>
+    document.getElementById("firstname").value = student_info[0]
+    document.getElementById("lastname").value = student_info[1]
+
+    document.getElementById("gpa").value = student_info[3]
+    document.getElementById("oncampus").value = student_info[4]
+    document.getElementById("isworking").value = student_info[5]
+    document.getElementById("firstname").value = student_info[0]
+    document.getElementById("lastname").placeholder = student_info[1]
+
+    document.getElementById("gpa").placeholder = student_info[3]
+    if(student_info[4]==1)
+        document.getElementById("oncampus").checked = true
+    else
+        document.getElementById("oncampus").checked = false
+    if(student_info[5]==1)
+        document.getElementById("isworking").checked = true
+    else
+        document.getElementById("isworking").checked = false
+</script>
+
+<!--button-->
+<script>
+    move_submit_button_to_bottom("student_info_button");
+</script>
+<!--
 <br><br><br>
 
+FirstName: <input type="text" id="firstname" name="firstname" class="form-control" s>
+LastName:  <input type="text" id="lastname" name="lastname" class="form-control"s>
+GPA: <input type="number" step="0.01" id="gpa" name="gpa" class="form-control" s>
+OnCampus: <input type="checkbox" id="oncampus" name="oncampus"class="form-control" s>
+IsWorking: <input type="checkbox" id="isworking" name="isworking" class="form-control" s>
 
 <H1>Course History</H1>
 <br>
@@ -49,7 +101,8 @@
     </script>
     {% endfor %}
 </form>
+-->
 <br>
-<button onclick="add_course_to_form()">Add Course</button>
+<!--<button onclick="add_course_to_form()">Add Course</button>-->
 </body>
 </html>

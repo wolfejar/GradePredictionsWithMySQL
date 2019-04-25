@@ -110,3 +110,10 @@ class SQL:
                     WHERE CS.CourseId = {}
                 '''.format(course_id))
         return self.my_cursor.fetchall()
+
+    def update_student_info(self, firstname, lastname, oncampus, isworking, gpa, email):
+        self.my_cursor.execute('''
+            UPDATE Student
+            SET FirstName= '{}', LastName = '{}', OnCampus= {},IsWorking={}, GPA={}
+            Where Email = '{}';
+        '''.format(firstname, lastname, oncampus, isworking, gpa, email))

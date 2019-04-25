@@ -71,7 +71,21 @@ def edit_account_info_get():
 
 @application.route('/edit_account_student_info_post', methods=['POST'])
 def edit_account_student_info_post():
-    request.form.get('first_name')
+    first_name = request.form.get('firstname')
+    last_name = request.form.get('lastname')
+    on_campus = request.form.get('oncampus')
+    if(on_campus is None):
+        on_campus = 0
+    else:
+        on_campus = 1
+    is_working = request.form.get('isworking')
+    if(is_working is None):
+        is_working = 0
+    else:
+        is_working = 1
+
+    gpa = request.form.get('gpa')
+    sql.update_student_info(first_name,last_name,on_campus,is_working,gpa,session['email'])
     return account_home()
 
 
