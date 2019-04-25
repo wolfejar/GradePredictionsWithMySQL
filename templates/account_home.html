@@ -124,10 +124,10 @@ Demo App
     <div id="London" class="tabcontent">
         <h3>Grade Predictor</h3>
         <form id="predictionForm" action="javascript:fun();">
-                GPA: <input type="text" name="gpa"><br>
+                GPA: <input type="text" name="gpa" value={{gpa}}><br>
                 How many credit hours are you currently taking? <input type="text" name="totalcredithours"><br>
-                Do you live on campus? <input type="checkbox" name="oncampus"><br>
-                Will you be working outside of class? <input type="checkbox" name="isworking"><br>
+                Do you live on campus? <input type="checkbox" name="oncampus" {{onCampus}}><br>
+                Will you be working outside of class? <input type="checkbox" name="isworking" {{working}}><br>
                 Do you hold a position in a club/activity? <input type="checkbox" name="hasposition"><br>
                 How many credit hours is this course for? <input type="text" name="coursecredithours"><br>
                 What level is this course? (i.e. Math 101 -> 101) <input type="text" name="courselevel"><br>
@@ -183,7 +183,7 @@ Demo App
         </form>
     </div>
     <div  id="predictionReport">
-        <p id="fun">yo</p>
+        <p id="fun"></p>
     </div>
 
 </div>

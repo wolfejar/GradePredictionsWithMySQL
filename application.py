@@ -85,9 +85,18 @@ def edit_account_course_info_post():
 def account_home():
     data = sql.get_home_info(session['email'])
     firstname = sql.get_student_first_name(session['email'])
-    block = 'style="display: block"'
-    none = 'style="display: none"'
-    return render_template('account_home.html', firstname=firstname, data=data)
+    studentInfo = sql.get_student_info_by_email(session['email'])
+    gpa = studentInfo[0]
+    if studentInfo[1]:
+        onCampus = 'checked'
+    else:
+        onCampus = ''
+    if studentInfo[2]:
+        working = 'checked'
+    else:
+        working=''
+    return render_template('account_home.html', firstname=firstname, data=data,
+                           gpa=gpa, onCampus=onCampus, working=working)
 
 
 @application.route('/course_report', methods=['POST'])

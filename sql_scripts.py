@@ -88,11 +88,11 @@ class SQL:
 
     def get_student_info_by_email(self, email):
         self.my_cursor.execute('''
-            Select S.FirstName, S.LastName, S.StudentId, S.GPA, S.OnCampus, S.IsWorking
+            Select S.GPA, S.OnCampus, S.IsWorking
             FROM Student S
             Where S.Email = '{}';
         '''.format(email))
-        return self.my_cursor.fetchone()[0]
+        return self.my_cursor.fetchone()
 
     def get_student_grades_by_course(self, course_id):
         self.my_cursor.execute('''
