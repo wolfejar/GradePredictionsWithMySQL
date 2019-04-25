@@ -130,8 +130,29 @@ def course_report():
         is_working_arr.append(student[8])
         gpa_arr.append(student[9])
         institution_arr.append(student[11])
-    grapher.plot_student_grades_vs_on_campus(grade_percentage_arr, on_campus_arr)
+    grapher.plot_student_grades_vs_on_campus('On Campus (Y/N)', 'Grade Percentage', grade_percentage_arr, on_campus_arr,
+                                             'static/course_report.png')
     return jsonify({'text': '../static/course_report.png'})
+
+
+@application.route('/instructor_report', methods=['POST'])
+def instructor_report():
+    instructor_id = int(request.form.get('instructor_id'))
+    data = sql.get_student_info_by_instructor_id(instructor_id)
+    grade_percentage_arr = []
+    on_campus_arr = []
+    is_working_arr = []
+    gpa_arr = []
+    institution_arr = []
+    for student in data:
+        grade_percentage_arr.append(student[0])
+        gpa_arr.append(student[1])
+        is_working_arr.append(student[2])
+        on_campus_arr.append(student[3])
+        institution_arr.append(student[4])
+    grapher.plot_student_grades_vs_on_campus('On Campus (Y/N)', 'Grade Percentage', grade_percentage_arr, on_campus_arr,
+                                             'static/instructor_report.png')
+    return jsonify({'text': '../static/instructor_report.png'})
 
 
 @application.route('/send', methods=['POST'])

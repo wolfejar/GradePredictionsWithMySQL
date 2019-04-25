@@ -150,7 +150,7 @@ Demo App
     <div id="Paris" class="tabcontent">
         <h3>Course Report</h3>
         <p>It will generate student past performances report in the past under specific course</p>
-        <form id="course_report_form" action="javascript:fun_image();">
+        <form id="course_report_form" action="javascript:fun_images('/course_report', '#course_report_form', '#course_img');">
                 Course ID: <input type="text" name="course_id"><br>
             <input class="btn btn-primary" type="submit" value="submit">
         </form>
@@ -159,7 +159,7 @@ Demo App
     <div id="Tokyo" class="tabcontent">
         <h3>Instructor Report</h3>
         <p>It will generate student past performances report in the past under specific instructor</p>
-        <form method="post" action="/instructor_report">
+        <form id="instructor_report_form" action="javascript:fun_images('/instructor_report', '#instructor_report_form', '#course_img');">
                 Instructor ID: <input type="text" name="instructor_id"><br>
             <input class="btn btn-primary" type="submit" value="submit">
         </form>
@@ -186,7 +186,7 @@ Demo App
         <p id="fun"></p>
     </div>
     <div class="course_report">
-        <img id="course_img" src="null">
+        <img id="course_img">
     </div>
 
 </div>
@@ -239,18 +239,17 @@ Demo App
         }
     }
 
-    function fun_image(){
+    function fun_images(post_path, form, out){
         $.ajax({
-            url: '/course_report', // url where to submit the request
+            url: post_path, // url where to submit the request
             type : "POST", // type of action POST || GET
             dataType : 'json', // data type
-            data : $("#course_report_form").serialize(), // post data || get data
+            data : $(form).serialize(), // post data || get data
             success : function(response) {
-                $('#course_img').attr("src", response['text']);
+                $(out).attr("src", response['text']);
             }
         })
     }
-
 
 </script>
 {% endblock %}

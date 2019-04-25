@@ -117,3 +117,14 @@ class SQL:
             SET FirstName= '{}', LastName = '{}', OnCampus= {},IsWorking={}, GPA={}
             Where Email = '{}';
         '''.format(firstname, lastname, oncampus, isworking, gpa, email))
+
+    def get_student_info_by_instructor_id(self, instructor_id):
+        self.my_cursor.execute('''
+            SELECT CS.GradePercentage, S.GPA, S.IsWorking, S.OnCampus, S.InstitutionId
+            FROM Instructor I
+            JOIN CourseInstructor CI on CI.InstructorId = I.InstructorId
+            JOIN CourseStudent CS on CS.CourseId = CI.CourseId
+            JOIN Student S on S.StudentId = CS.StudentId
+            WHERE I.InstructorId = {}
+                '''.format(instructor_id))
+        return self.my_cursor.fetchall()
