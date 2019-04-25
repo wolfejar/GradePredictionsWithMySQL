@@ -1,5 +1,5 @@
 import numpy as np
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, jsonify
 import current_model
 from sql_scripts import SQL
 from passlib.hash import pbkdf2_sha256
@@ -8,6 +8,7 @@ from flask_bootstrap import Bootstrap
 application = Flask(__name__)
 Bootstrap(application)
 sql = SQL()
+application.app_context()
 
 
 @application.route('/')
@@ -84,7 +85,25 @@ def edit_account_course_info_post():
 def account_home():
     data = sql.get_home_info(session['email'])
     firstname = sql.get_student_first_name(session['email'])
+    block = 'style="display: block"'
+    none = 'style="display: none"'
     return render_template('account_home.html', firstname=firstname, data=data)
+
+
+@application.route('/course_report', methods=['POST'])
+def course_report():
+    course_id = int(request.form.get('course_id'))
+    data = sql.get_student_info_by_course_id(course_id)
+    grade_percentage_arr = []
+    on_campus_arr = []
+    is_working_arr = []
+    gpa_arr = []
+    institution_arr = []
+    for student in data:
+        grade_percentage_arr.append(student[2])
+        on_campus_arr.append(student[8])
+        # is_working_arr.append(student[])
+    return account_home()
 
 
 @application.route('/send', methods=['POST'])
@@ -105,14 +124,17 @@ def send():
         HumanDiversitywithintheUS = request.form.get('HumanDiversitywithintheUS') is not None
         NaturalandPhysicalSciences = request.form.get('NaturalandPhysicalSciences') is not None
         SocialSciences = request.form.get('SocialSciences') is not None
-
+        years_teaching = request.form.get('YearsTeaching')
+        is_tenured = request.form.get('IsTenured') is not None
+        degree = request.form.get('Degree')
         # normalize data as we enter it into input array
         input_data = [float(gpa) / 4.0, float(totalcreditcours) / 22.0, float(int(oncampus)), float(int(isworking)),
                       float(int(hasposition)), float(coursecredithours) / 6.0, float(courselevel) / 1000,
                       float(int(AestheticInterpetation)), float(int(EmpiricalandQuantitativeReasoning)),
                       float(int(EthicalReasoningandResponsibility)), float(int(GlobalIssuesandPerspectives)),
                       float(int(HistoricalPerspectives)), float(int(HumanDiversitywithintheUS)),
-                      float(int(NaturalandPhysicalSciences)), float(int(SocialSciences))]
+                      float(int(NaturalandPhysicalSciences)), float(int(SocialSciences)),
+                      float(int(years_teaching)) / 8.0, float(int(is_tenured)), float(int(degree)) / 3.0]
         input_data = np.array([input_data])
 
         model = current_model.get_model()
@@ -130,7 +152,9 @@ def send():
         else:
             letter_grade = 'A'
 
-        return render_template('result.html', numerical_grade=numerical_grade, letter_grade=letter_grade)
+        message = 'You grade will be' + letter_grade + ' ' + str(numerical_grade)
+
+        return jsonify({'text':message})
 
 
 if __name__ == '__main__':
