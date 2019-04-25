@@ -42,7 +42,7 @@ def build_list(arr):
 # bool aesthetic, bool empirical, bool ethical, bool global issue, bool historical, bool human diversity,
 # bool natural/physical sciences, bool social sciences
 # int instructor_years_teaching, int instructor_tenured, int instructor_degree
-# Should train on 40k samples, but we know the pattern can be learned almost exactly using only a small portion
+# Should train on ~40k samples, but we know the pattern can be learned almost exactly using only a small portion
 input_rows, classifications = build_list(sql.get_all_course_students(4000))
 
 model = keras.Sequential([

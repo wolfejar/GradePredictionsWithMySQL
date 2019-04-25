@@ -6,6 +6,11 @@ Demo App
 
 {% block styles %}
 {{super()}}
+<head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+</head>
 <link rel="stylesheet" href="{{url_for('.static', filename='starter-template.css')}}">
 <style>
     * {
@@ -102,7 +107,7 @@ Demo App
 </div><!-- /.container -->
 
 <div class="container" id="welcome" style="height: 700px">
-    <h2>Welcome {{firstname}}, you are signed in!!</h2>
+    <h2>Welcome {{firstname}}, you are signed in!</h2>
 
     {% for item in data %}
     <p> {{ item }} </p>
@@ -130,7 +135,7 @@ Demo App
                 Will you be working outside of class? <input type="checkbox" name="isworking" {{working}}><br>
                 Do you hold a position in a club/activity? <input type="checkbox" name="hasposition"><br>
                 How many credit hours is this course for? <input type="text" name="coursecredithours"><br>
-                What level is this course? (i.e. Math 101 -> 101) <input type="text" name="courselevel"><br>
+                What level is this course? <input type="text" name="courselevel"><br>
                 <br><h4>K-State 8 - Check all that apply for this course:</h4>
                 Aesthetic Interpetation <input type="checkbox" name="AestheticInterpetation"><br>
                 Empirical and Quantitative Reasoning <input type="checkbox" name="EmpiricalandQuantitativeReasoning"><br>
@@ -149,8 +154,8 @@ Demo App
 
     <div id="Paris" class="tabcontent">
         <h3>Course Report</h3>
-        <p>It will generate student past performances report in the past under specific course</p>
-        <form id="course_report_form" action="javascript:fun_images('/course_report', '#course_report_form', '#course_img');">
+        <p>Provide a course ID for information on past student performance</p>
+        <form id="course_report_form" action="javascript:fun_images('/course_report', '#course_report_form');">
                 Course ID: <input type="text" name="course_id"><br>
             <input class="btn btn-primary" type="submit" value="submit">
         </form>
@@ -158,8 +163,8 @@ Demo App
 
     <div id="Tokyo" class="tabcontent">
         <h3>Instructor Report</h3>
-        <p>It will generate student past performances report in the past under specific instructor</p>
-        <form id="instructor_report_form" action="javascript:fun_images('/instructor_report', '#instructor_report_form', '#course_img');">
+        <p>Provide an instructor ID for information on past student performance</p>
+        <form id="instructor_report_form" action="javascript:fun_images('/instructor_report', '#instructor_report_form');">
                 Instructor ID: <input type="text" name="instructor_id"><br>
             <input class="btn btn-primary" type="submit" value="submit">
         </form>
@@ -167,7 +172,7 @@ Demo App
 
     <div id="Boston" class="tabcontent">
         <h3>Activity Report</h3>
-        <p>It will generate student past performances report in the past under specific activity</p>
+        <p>Provide an activity ID for information on past student performance</p>
         <form method="post" action="/activity_report">
                 Instructor ID: <input type="text" name="activity_id"><br>
             <input class="btn btn-primary" type="submit" value="submit">
@@ -176,17 +181,23 @@ Demo App
 
     <div id="Chicago" class="tabcontent">
         <h3>Institution Report</h3>
-        <p>It will generate student past performances report in the past under specific institution</p>
+        <p>Provide an institution ID for information on past student performance</p>
         <form method="post" action="/institution_report">
                 Instructor ID: <input type="text" name="institution_id"><br>
             <input class="btn btn-primary" type="submit" value="submit">
         </form>
     </div>
     <div  id="predictionReport">
-        <p id="fun"></p>
+        <h3 id="fun"></h3>
     </div>
     <div class="course_report">
-        <img id="course_img">
+        <img id="img1">
+        <br>
+        <img id="img2">
+        <br>
+        <img id="img3">
+        <br>
+        <img id="img4">
     </div>
 
 </div>
@@ -239,14 +250,20 @@ Demo App
         }
     }
 
-    function fun_images(post_path, form, out){
+    function fun_images(post_path, form){
         $.ajax({
             url: post_path, // url where to submit the request
             type : "POST", // type of action POST || GET
             dataType : 'json', // data type
+            cache : 'false',
             data : $(form).serialize(), // post data || get data
             success : function(response) {
-                $(out).attr("src", response['text']);
+                $('#img1').attr("src", response['img1']);
+                $('#img2').attr("src", response['img2']);
+                $('#img3').attr("src", response['img3']);
+                $('#img4').attr("src", response['img4']);
+                $('#fun').text(response['other_data']);
+                display(true);
             }
         })
     }

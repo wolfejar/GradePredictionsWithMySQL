@@ -128,3 +128,23 @@ class SQL:
             WHERE I.InstructorId = {}
                 '''.format(instructor_id))
         return self.my_cursor.fetchall()
+
+    def get_instructor_info_by_id(self, instructor_id):
+        self.my_cursor.execute('''
+            SELECT I.*, C.CourseDept, C.CourseLevel
+            FROM Instructor I
+            JOIN CourseInstructor CI on CI.InstructorId = I.InstructorId
+            JOIN Course C on C.CourseId = CI.CourseId
+            Where I.InstructorId = {}
+        '''.format(instructor_id))
+        return self.my_cursor.fetchone()
+
+    def get_course_info_by_id(self, course_id):
+        self.my_cursor.execute('''
+            SELECT C.CourseTypeId, C.CourseDept, C.CourseLevel, C.CreditHours, I.FirstName, I.LastName, I.IsTenured, I.YearsTeaching, I.Degree
+            FROM Course C
+            Join CourseInstructor CI on C.CourseId = CI.CourseId
+            JOIN Instructor I on I.InstructorId = CI.InstructorId
+            Where C.CourseId = {}
+        '''.format(course_id))
+        return self.my_cursor.fetchone()

@@ -10,6 +10,19 @@ application = Flask(__name__)
 Bootstrap(application)
 sql = SQL()
 application.app_context()
+application.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+
+
+@application.after_request
+def add_header(r):
+    """
+    Add headers to both force latest IE rendering engine or Chrome Frame,
+    and also to cache the rendered page for 10 minutes.
+    """
+    r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, public, max-age=0"
+    r.headers["Pragma"] = "no-cache"
+    r.headers["Expires"] = "0"
+    return r
 
 
 @application.route('/')
@@ -75,12 +88,12 @@ def edit_account_student_info_post():
     first_name = request.form.get('firstname')
     last_name = request.form.get('lastname')
     on_campus = request.form.get('oncampus')
-    if(on_campus is None):
+    if on_campus is None:
         on_campus = 0
     else:
         on_campus = 1
     is_working = request.form.get('isworking')
-    if(is_working is None):
+    if is_working is None:
         is_working = 0
     else:
         is_working = 1
@@ -130,9 +143,25 @@ def course_report():
         is_working_arr.append(student[8])
         gpa_arr.append(student[9])
         institution_arr.append(student[11])
+    grapher.plot_student_grades_vs_gpa('GPA', 'Grade Percentage', grade_percentage_arr, gpa_arr,
+                                       'static/course_report1.png')
     grapher.plot_student_grades_vs_on_campus('On Campus (Y/N)', 'Grade Percentage', grade_percentage_arr, on_campus_arr,
-                                             'static/course_report.png')
-    return jsonify({'text': '../static/course_report.png'})
+                                             'static/course_report2.png')
+    grapher.plot_student_grades_vs_is_working('Is Working (Y/N)', 'Grade Percentage', grade_percentage_arr,
+                                              is_working_arr, 'static/course_report3.png')
+    grapher.plot_student_grades_vs_institution('Institution', 'Grade Percentage', grade_percentage_arr,
+                                               institution_arr, 'static/course_report4.png')
+    course_info = sql.get_course_info_by_id(course_id)
+    info_str = course_info[1] + ' ' + str(course_info[2]) + ', Credit Hours: ' + str(course_info[3]) +\
+               ', Instructor: ' + course_info[4] + ' ' + course_info[5] + ', Is Tenured: ' +\
+               str(bool(course_info[6])) + ', Years Teaching: ' + str(course_info[7]) + ', Degree: ' + \
+               ['Bachelor\'s', 'Master\'s', 'PHD'][course_info[8]-1]
+
+    return jsonify({'img1': '../static/course_report1.png',
+                    'img2': '../static/course_report2.png',
+                    'img3': '../static/course_report3.png',
+                    'img4': '../static/course_report4.png',
+                    'other_data': info_str})
 
 
 @application.route('/instructor_report', methods=['POST'])
@@ -150,9 +179,24 @@ def instructor_report():
         is_working_arr.append(student[2])
         on_campus_arr.append(student[3])
         institution_arr.append(student[4])
+    grapher.plot_student_grades_vs_gpa('GPA', 'Grade Percentage', grade_percentage_arr, gpa_arr,
+                                       'static/instructor_report1.png')
     grapher.plot_student_grades_vs_on_campus('On Campus (Y/N)', 'Grade Percentage', grade_percentage_arr, on_campus_arr,
-                                             'static/instructor_report.png')
-    return jsonify({'text': '../static/instructor_report.png'})
+                                             'static/instructor_report2.png')
+    grapher.plot_student_grades_vs_is_working('Is Working (Y/N)', 'Grade Percentage', grade_percentage_arr,
+                                              is_working_arr, 'static/instructor_report3.png')
+    grapher.plot_student_grades_vs_institution('Institution', 'Grade Percentage', grade_percentage_arr,
+                                               institution_arr, 'static/instructor_report4.png')
+    instructor_info = sql.get_instructor_info_by_id(instructor_id)
+    info_str = instructor_info[1] + ' ' + instructor_info[2] + ', Teaches: ' + instructor_info[6] + ' ' + \
+               str(instructor_info[7]) + ', Is Tenured: ' + str(bool(instructor_info[3])) +\
+               ', Years Teaching: ' + str(instructor_info[4]) + ', Degree: ' +\
+               ['Bachelor\'s', 'Master\'s', 'PHD'][instructor_info[5]-1]
+    return jsonify({'img1': '../static/instructor_report1.png',
+                    'img2': '../static/instructor_report2.png',
+                    'img3': '../static/instructor_report3.png',
+                    'img4': '../static/instructor_report4.png',
+                    'other_data': info_str})
 
 
 @application.route('/send', methods=['POST'])
@@ -201,9 +245,9 @@ def send():
         else:
             letter_grade = 'A'
 
-        message = 'You grade will be' + letter_grade + ' ' + str(numerical_grade)
+        message = 'Your predicted grade is: ' + letter_grade + ' ' + str(round(numerical_grade, 2)) + '%'
 
-        return jsonify({'text':message})
+        return jsonify({'text': message})
 
 
 if __name__ == '__main__':
