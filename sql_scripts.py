@@ -56,8 +56,10 @@ class SQL:
             From Student S
             Where S.Email = '{}'
         '''.format(email))
-
-        return self.my_cursor.fetchone()[0]
+        row = self.my_cursor.fetchone()
+        if row is None:
+            return None
+        return row[0]
 
     def get_home_info(self, email):
         self.my_cursor.execute('''
