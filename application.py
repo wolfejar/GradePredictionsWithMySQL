@@ -1,9 +1,10 @@
 import numpy as np
-from flask import Flask, render_template, request, session, jsonify
+from flask import Flask, render_template, request, session, jsonify, Response
 import current_model
 from sql_scripts import SQL
 from passlib.hash import pbkdf2_sha256
 from flask_bootstrap import Bootstrap
+import grapher
 
 application = Flask(__name__)
 Bootstrap(application)
@@ -98,7 +99,6 @@ def edit_account_course_info_post():
 @application.route('/account_home', methods=['GET', 'POST'])
 def account_home():
     data = sql.get_home_info(session['email'])
-
     studentInfo = sql.get_student_info_by_email(session['email'])
     firstname = studentInfo[0]
     lastname = studentInfo[1]
@@ -126,9 +126,12 @@ def course_report():
     institution_arr = []
     for student in data:
         grade_percentage_arr.append(student[2])
-        on_campus_arr.append(student[8])
-        # is_working_arr.append(student[])
-    return account_home()
+        on_campus_arr.append(student[7])
+        is_working_arr.append(student[8])
+        gpa_arr.append(student[9])
+        institution_arr.append(student[11])
+    grapher.plot_student_grades_vs_on_campus(grade_percentage_arr, on_campus_arr)
+    return jsonify({'text': '../static/course_report.png'})
 
 
 @application.route('/send', methods=['POST'])

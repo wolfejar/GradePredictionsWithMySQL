@@ -150,7 +150,7 @@ Demo App
     <div id="Paris" class="tabcontent">
         <h3>Course Report</h3>
         <p>It will generate student past performances report in the past under specific course</p>
-        <form method="post" action="/course_report">
+        <form id="course_report_form" action="javascript:fun_image();">
                 Course ID: <input type="text" name="course_id"><br>
             <input class="btn btn-primary" type="submit" value="submit">
         </form>
@@ -184,6 +184,9 @@ Demo App
     </div>
     <div  id="predictionReport">
         <p id="fun"></p>
+    </div>
+    <div class="course_report">
+        <img id="course_img" src="null">
     </div>
 
 </div>
@@ -235,6 +238,19 @@ Demo App
             x.style.display = "none";
         }
     }
+
+    function fun_image(){
+        $.ajax({
+            url: '/course_report', // url where to submit the request
+            type : "POST", // type of action POST || GET
+            dataType : 'json', // data type
+            data : $("#course_report_form").serialize(), // post data || get data
+            success : function(response) {
+                $('#course_img').attr("src", response['text']);
+            }
+        })
+    }
+
 
 </script>
 {% endblock %}
