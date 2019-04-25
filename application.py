@@ -41,7 +41,7 @@ def sign_up_post():
     instution_id = request.form.get('institutionId')
     email = request.form.get('email')
     sql.create_student(hashed_pass, first_name, last_name, int(on_campus), int(is_working), float(gpa),
-                       email)
+                       email, instution_id)
     session['email'] = email
     return account_home()
 
@@ -79,7 +79,7 @@ def edit_account_info_get():
 
 @application.route('/edit_account_student_info_post', methods=['POST'])
 def edit_account_student_info_post():
-    request.form.get()
+    request.form.get('first_name')
     return account_home()
 
 
@@ -124,14 +124,17 @@ def send():
         HumanDiversitywithintheUS = request.form.get('HumanDiversitywithintheUS') is not None
         NaturalandPhysicalSciences = request.form.get('NaturalandPhysicalSciences') is not None
         SocialSciences = request.form.get('SocialSciences') is not None
-
+        years_teaching = request.form.get('YearsTeaching')
+        is_tenured = request.form.get('IsTenured') is not None
+        degree = request.form.get('Degree')
         # normalize data as we enter it into input array
         input_data = [float(gpa) / 4.0, float(totalcreditcours) / 22.0, float(int(oncampus)), float(int(isworking)),
                       float(int(hasposition)), float(coursecredithours) / 6.0, float(courselevel) / 1000,
                       float(int(AestheticInterpetation)), float(int(EmpiricalandQuantitativeReasoning)),
                       float(int(EthicalReasoningandResponsibility)), float(int(GlobalIssuesandPerspectives)),
                       float(int(HistoricalPerspectives)), float(int(HumanDiversitywithintheUS)),
-                      float(int(NaturalandPhysicalSciences)), float(int(SocialSciences))]
+                      float(int(NaturalandPhysicalSciences)), float(int(SocialSciences)),
+                      float(int(years_teaching)) / 8.0, float(int(is_tenured)), float(int(degree)) / 3.0]
         input_data = np.array([input_data])
 
         model = current_model.get_model()
