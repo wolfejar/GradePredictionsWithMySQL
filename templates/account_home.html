@@ -224,6 +224,9 @@ Demo App
         document.getElementById(cityName).style.display = "block";
         evt.currentTarget.className += " active";
         display(false);
+        if(cityName === "London") {
+            blank_images()
+        }
     }
 
     // Get the element with id="defaultOpen" and click on it
@@ -269,6 +272,14 @@ Demo App
                 display(true);
             }
         })
+    }
+
+    function blank_images() {
+        $('#img1').attr("src", "");
+        $('#img2').attr("src", "");
+        $('#img3').attr("src", "");
+        $('#img4').attr("src", "");
+        $('#img5').attr("src", "");
     }
 
 </script>
