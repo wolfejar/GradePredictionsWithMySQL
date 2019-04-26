@@ -148,3 +148,42 @@ class SQL:
             Where C.CourseId = {}
         '''.format(course_id))
         return self.my_cursor.fetchone()
+
+    def get_student_info_by_activity_id(self, activity_id):
+        self.my_cursor.execute('''
+            SELECT COALESCE(AST.HasPosition, 0), S.GPA, S.OnCampus, S.IsWorking, S.InstitutionId, CS.GradePercentage
+            FROM Activity A
+            Join ActivityStudent AST on A.ActivityId = AST.ActivityId
+            Join Student S on S.StudentId = AST.StudentId
+            Join CourseStudent CS on CS.StudentId = S.StudentId
+            Where A.ActivityId = {}
+        '''.format(activity_id))
+        return self.my_cursor.fetchall()
+
+    def get_activity_info_by_id(self, activity_id):
+        self.my_cursor.execute('''
+            Select A.ActivityName
+            From Activity A 
+            Where A.ActivityId = {}
+        '''.format(activity_id))
+        return self.my_cursor.fetchone()
+
+    def get_student_info_by_institution_id(self, institution_id):
+        self.my_cursor.execute('''
+            SELECT S.OnCampus, S.IsWorking, S.GPA, CS.GradePercentage, AST.HasPosition, C.CourseDept
+            FROM Institution I
+            JOIN Student S on S.InstitutionId = I.InstitutionId
+            JOIN ActivityStudent AST on AST.StudentId = S.StudentId
+            JOIN CourseStudent CS on CS.StudentId = S.StudentId
+            JOIN Course C on C.CourseId = CS.CourseId
+            WHERE I.InstitutionId = {}
+        '''.format(institution_id))
+        return self.my_cursor.fetchall()
+
+    def get_institution_info_by_id(self, institution_id):
+        self.my_cursor.execute('''
+                    SELECT I.InstitutionName
+                    FROM Institution I
+                    WHERE I.InstitutionId = {}
+                '''.format(institution_id))
+        return self.my_cursor.fetchone()

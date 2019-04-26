@@ -52,3 +52,25 @@ def plot_student_grades_vs_institution(x_label, y_label, grade_percentage_arr, g
     plt.savefig(dest)
     plt.close()
 
+
+def plot_student_grades_vs_position(x_label, y_label, grade_percentage_arr, pos_arr, dest):
+    x = pos_arr
+    y = grade_percentage_arr
+    plt.plot(x, y, 'o', color='orange')
+    plt.xlabel = x_label
+    plt.ylabel = y_label
+    plt.xticks(ticks=[0, 1], labels=['No Position', 'Has Position'])
+    plt.title("Student Performance vs Position In Club")
+    plt.savefig(dest)
+    plt.close()
+
+
+def plot_student_grades_vs_department(x_label, y_label, grade_percentage_arr, dept_arr, dest):
+    x = dept_arr
+    y = grade_percentage_arr
+    plt.plot(x, y, 'o', color='orange')
+    plt.xlabel = x_label
+    plt.ylabel = y_label
+    plt.title("Student Performance vs Department")
+    plt.savefig(dest)
+    plt.close()

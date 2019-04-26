@@ -199,6 +199,80 @@ def instructor_report():
                     'other_data': info_str})
 
 
+@application.route('/activity_report', methods=['POST'])
+def activity_report():
+    activity_id = int(request.form.get('activity_id'))
+    data = sql.get_student_info_by_activity_id(activity_id)
+    has_pos_arr = []
+    grade_percentage_arr = []
+    on_campus_arr = []
+    is_working_arr = []
+    gpa_arr = []
+    institution_arr = []
+    for student in data:
+        has_pos_arr.append(student[0])
+        gpa_arr.append(student[1])
+        on_campus_arr.append(student[2])
+        is_working_arr.append(student[3])
+        institution_arr.append(student[4])
+        grade_percentage_arr.append(student[5])
+    grapher.plot_student_grades_vs_gpa('GPA', 'Grade Percentage', grade_percentage_arr, gpa_arr,
+                                       'static/activity_report1.png')
+    grapher.plot_student_grades_vs_on_campus('On Campus (Y/N)', 'Grade Percentage', grade_percentage_arr, on_campus_arr,
+                                             'static/activity_report2.png')
+    grapher.plot_student_grades_vs_is_working('Is Working (Y/N)', 'Grade Percentage', grade_percentage_arr,
+                                              is_working_arr, 'static/activity_report3.png')
+    grapher.plot_student_grades_vs_institution('Institution', 'Grade Percentage', grade_percentage_arr,
+                                               institution_arr, 'static/activity_report4.png')
+    grapher.plot_student_grades_vs_position('Has Position (Y/N)', 'Grade Percentage', grade_percentage_arr,
+                                            has_pos_arr, 'static/activity_report5.png')
+    activity_info = sql.get_activity_info_by_id(activity_id)
+    info_str = activity_info[0]
+    return jsonify({'img1': '../static/activity_report1.png',
+                    'img2': '../static/activity_report2.png',
+                    'img3': '../static/activity_report3.png',
+                    'img4': '../static/activity_report4.png',
+                    'img5': '../static/activity_report5.png',
+                    'other_data': info_str})
+
+
+@application.route('/institution_report', methods=['POST'])
+def institution_report():
+    institution_id = int(request.form.get('institution_id'))
+    data = sql.get_student_info_by_institution_id(institution_id)
+    has_pos_arr = []
+    grade_percentage_arr = []
+    on_campus_arr = []
+    is_working_arr = []
+    gpa_arr = []
+    dept_arr = []
+    for student in data:
+        on_campus_arr.append(student[0])
+        is_working_arr.append(student[1])
+        gpa_arr.append(student[2])
+        grade_percentage_arr.append(student[3])
+        has_pos_arr.append(student[4])
+        dept_arr.append(student[5])
+    grapher.plot_student_grades_vs_gpa('GPA', 'Grade Percentage', grade_percentage_arr, gpa_arr,
+                                       'static/institution_report1.png')
+    grapher.plot_student_grades_vs_on_campus('On Campus (Y/N)', 'Grade Percentage', grade_percentage_arr, on_campus_arr,
+                                             'static/institution_report2.png')
+    grapher.plot_student_grades_vs_is_working('Is Working (Y/N)', 'Grade Percentage', grade_percentage_arr,
+                                              is_working_arr, 'static/institution_report3.png')
+    grapher.plot_student_grades_vs_department('Department', 'Grade Percentage', grade_percentage_arr,
+                                              dept_arr, 'static/institution_report4.png')
+    grapher.plot_student_grades_vs_position('Has Position (Y/N)', 'Grade Percentage', grade_percentage_arr,
+                                            has_pos_arr, 'static/institution_report5.png')
+    activity_info = sql.get_institution_info_by_id(institution_id)
+    info_str = activity_info[0]
+    return jsonify({'img1': '../static/institution_report1.png',
+                    'img2': '../static/institution_report2.png',
+                    'img3': '../static/institution_report3.png',
+                    'img4': '../static/institution_report4.png',
+                    'img5': '../static/institution_report5.png',
+                    'other_data': info_str})
+
+
 @application.route('/send', methods=['POST'])
 def send():
     if request.method == 'POST':

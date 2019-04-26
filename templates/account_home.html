@@ -173,8 +173,8 @@ Demo App
     <div id="Boston" class="tabcontent">
         <h3>Activity Report</h3>
         <p>Provide an activity ID for information on past student performance</p>
-        <form method="post" action="/activity_report">
-                Instructor ID: <input type="text" name="activity_id"><br>
+        <form id="activity_report_form"  action="javascript:fun_images('/activity_report', '#activity_report_form');">
+                Activity ID: <input type="text" name="activity_id"><br>
             <input class="btn btn-primary" type="submit" value="submit">
         </form>
     </div>
@@ -182,8 +182,8 @@ Demo App
     <div id="Chicago" class="tabcontent">
         <h3>Institution Report</h3>
         <p>Provide an institution ID for information on past student performance</p>
-        <form method="post" action="/institution_report">
-                Instructor ID: <input type="text" name="institution_id"><br>
+        <form id="institution_report_form" action="javascript:fun_images('/institution_report', '#institution_report_form');">
+                Institution ID: <input type="text" name="institution_id"><br>
             <input class="btn btn-primary" type="submit" value="submit">
         </form>
     </div>
@@ -198,6 +198,8 @@ Demo App
         <img id="img3">
         <br>
         <img id="img4">
+        <br>
+        <img id="img5">
     </div>
 
 </div>
@@ -262,6 +264,7 @@ Demo App
                 $('#img2').attr("src", response['img2']);
                 $('#img3').attr("src", response['img3']);
                 $('#img4').attr("src", response['img4']);
+                $('#img5').attr("src", response['img5']);
                 $('#fun').text(response['other_data']);
                 display(true);
             }
