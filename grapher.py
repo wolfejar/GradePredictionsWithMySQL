@@ -47,7 +47,7 @@ def plot_student_grades_vs_institution(x_label, y_label, grade_percentage_arr, g
     plt.ylabel = y_label
     plt.xticks(ticks=[1, 2, 3, 4, 5], labels=['Kansas State University', 'University of Kansas',
                                               'Wichita State University', 'Emporia State University',
-                                              'Fort Hays State University'], rotation='vertical')
+                                              'Fort Hays State University'], fontsize='6')
     plt.title("Student Performance vs Student Institution")
     plt.savefig(dest)
     plt.close()
