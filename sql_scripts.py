@@ -187,3 +187,10 @@ class SQL:
                     WHERE I.InstitutionId = {}
                 '''.format(institution_id))
         return self.my_cursor.fetchone()
+
+    def delete_student_by_email(self, email):
+        self.my_cursor.execute('''
+            DELETE
+            FROM Student
+            WHERE Email = '{}'
+        '''.format(email))
