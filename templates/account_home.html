@@ -31,7 +31,7 @@ Demo App
         border: 1px solid #ccc;
         background-color: #f1f1f1;
         width: fit-content;
-        height: fit-content%;
+        height: fit-content;
     }
 
     /* Style the buttons inside the tab */
@@ -136,6 +136,13 @@ Demo App
                 Do you hold a position in a club/activity? <input type="checkbox" name="hasposition"><br>
                 How many credit hours is this course for? <input type="text" name="coursecredithours"><br>
                 What level is this course? <input type="text" name="courselevel"><br>
+                Instructor Years Teaching <input type="text" name="YearsTeaching"><br>
+                Instructor Is Tenured? <input type="checkbox" name="IsTenured"><br>
+                Instructor Degree <select name = "Degree" size = "1">
+                    <option value = "1">Bachelor's</option>
+                    <option value = "2" selected>Master's</option>
+                    <option value = "3">PHD</option>
+                </select>
                 <br><h4>K-State 8 - Check all that apply for this course:</h4>
                 Aesthetic Interpetation <input type="checkbox" name="AestheticInterpetation"><br>
                 Empirical and Quantitative Reasoning <input type="checkbox" name="EmpiricalandQuantitativeReasoning"><br>
@@ -145,9 +152,6 @@ Demo App
                 Human Diversity within the US <input type="checkbox" name="HumanDiversitywithintheUS"><br>
                 Natural and Physical Sciences <input type="checkbox" name="NaturalandPhysicalSciences"><br>
                 Social Sciences <input type="checkbox" name="SocialSciences"><br>
-                Instructor Years Teaching <input type="text" name="YearsTeaching"><br>
-                Instructor Is Tenured? <input type="checkbox" name="IsTenured"><br>
-                Instructor Degree <input type="text" name="Degree"><br>
             <input class="btn btn-primary" type="submit" value="submit">
         </form>
     </div>
@@ -224,9 +228,7 @@ Demo App
         document.getElementById(cityName).style.display = "block";
         evt.currentTarget.className += " active";
         display(false);
-        if(cityName === "London") {
-            blank_images()
-        }
+        blank_images()
     }
 
     // Get the element with id="defaultOpen" and click on it

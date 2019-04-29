@@ -1,5 +1,5 @@
 import numpy as np
-from flask import Flask, render_template, request, session, jsonify, Response
+from flask import Flask, render_template, request, session, jsonify
 import current_model
 from sql_scripts import SQL
 from passlib.hash import pbkdf2_sha256
