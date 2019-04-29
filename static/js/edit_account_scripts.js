@@ -45,3 +45,10 @@ var account_info = ['first_name', 'last_name', 'username', 'gpa', 'on_campus', '
         parent_element.removeChild(submit_button);
         parent_element.appendChild(submit_button);
     }
+
+    function delete_account() {
+        var choice = confirm("This will permanently delete your account. Are you sure?");
+        if (choice == true){
+            $().post("/delete_account")
+        }
+    }
