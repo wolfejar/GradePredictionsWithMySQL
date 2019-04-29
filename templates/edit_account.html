@@ -24,8 +24,12 @@
     <input type="number" max="4.00" min="0.00" step="0.01" id="gpa" name="gpa" class="form-control">
     <label for="oncampus">Live on campus: <input id ="oncampus"type="checkbox" name="oncampus"><br></label>
     <label for="isworking">Currently working a part time or full time job: <input id="isworking"type="checkbox" name="isworking"><br></label>
-<input id="student_info_button" class="btn btn-primary" type="submit" value= "Change" >
+    <input id="student_info_button" class="btn btn-primary" type="submit" value= "Change" style="float: left">
+    <input id="student_info_delete_account" class="btn btn-danger" type="button" VALUE="DELETE ACCOUNT"
+           onclick="delete_account()" style="margin-left: 20px">
 </form>
+
+
 
 <!--array for info-->
 <script type="text/javascript">
@@ -66,11 +70,18 @@
         document.getElementById("isworking").checked = true
     else
         document.getElementById("isworking").checked = false
-</script>
 
-<!--button-->
-<script>
     move_submit_button_to_bottom("student_info_button");
+
+    function delete_account(){
+        var result = confirm('This will permanently delete your account. Are you sure?')
+        if (result == true){
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "/delete_account", false)
+            xhttp.send()
+            window.location.href = '/index'
+        }
+    }
 </script>
 <!--
 <br><br><br>

@@ -108,6 +108,10 @@ def edit_account_course_info_post():
     request.form.get()
     return account_home()
 
+@application.route('/delete_account', methods=['POST'])
+def delete_account():
+    sql.delete_student_by_email(session['email'])
+    return logout()
 
 @application.route('/account_home', methods=['GET', 'POST'])
 def account_home():
