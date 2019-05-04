@@ -143,8 +143,6 @@ Demo App
                     <option value = "2" selected>Master's</option>
                     <option value = "3">PHD</option>
                 </select>
-                <br><h4>K-State 8 - Check all that apply for this course:</h4>
-
                 <br><h4>Check all that apply for this course:</h4>
                 Aesthetic Interpetation <input type="checkbox" name="AestheticInterpetation"><br>
                 Empirical and Quantitative Reasoning <input type="checkbox" name="EmpiricalandQuantitativeReasoning"><br>
@@ -194,7 +192,7 @@ Demo App
         </form>
     </div>
     <div  id="predictionReport">
-        <h3 id="fun"></h3>
+        <tbl id="fun"></tbl>
     </div>
     <div class="course_report">
         <img id="img1">
@@ -245,7 +243,7 @@ Demo App
             dataType : 'json', // data type
             data : $("#predictionForm").serialize(), // post data || get data
             success : function(response) {
-                $('#fun').text(response['text']);
+                tableCreate(response['text']);
                 display(true);         }
         })
     }
@@ -272,7 +270,7 @@ Demo App
                 $('#img3').attr("src", response['img3']);
                 $('#img4').attr("src", response['img4']);
                 $('#img5').attr("src", response['img5']);
-                $('#fun').text(response['other_data']);
+                tableCreate(response['other_data']);
                 display(true);
             }
         })
@@ -284,6 +282,22 @@ Demo App
         $('#img3').attr("src", "");
         $('#img4').attr("src", "");
         $('#img5').attr("src", "");
+    }
+
+    function tableCreate(data) {
+        var tbl = document.getElementById('fun');
+        tbl.innerHTML = ''; // clear table
+        tbl.style.width = '100%';
+        tbl.setAttribute('border', '1');
+        var tbdy = document.createElement('tbody');
+        console.log(data);
+        for (var i = 0; i < data.length; i++) {
+          console.log(data[i]);
+          var tr = document.createElement('tr');
+          tr.textContent = data[i];
+          tbdy.appendChild(tr);
+        }
+        tbl.appendChild(tbdy);
     }
 
 </script>

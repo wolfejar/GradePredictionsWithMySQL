@@ -108,28 +108,29 @@ def edit_account_course_info_post():
     request.form.get()
     return account_home()
 
+
 @application.route('/delete_account', methods=['POST'])
 def delete_account():
     sql.delete_student_by_email(session['email'])
     return logout()
 
+
 @application.route('/account_home', methods=['GET', 'POST'])
 def account_home():
     data = sql.get_home_info(session['email'])
-    studentInfo = sql.get_student_info_by_email(session['email'])
-    firstname = studentInfo[0]
-    lastname = studentInfo[1]
-    gpa = studentInfo[4]
-    if studentInfo[2]:
-        onCampus = 'checked'
+    student_info = sql.get_student_info_by_email(session['email'])
+    first_name = student_info[0]
+    gpa = student_info[4]
+    if student_info[2]:
+        on_campus = 'checked'
     else:
-        onCampus = ''
-    if studentInfo[3]:
+        on_campus = ''
+    if student_info[3]:
         working = 'checked'
     else:
-        working=''
-    return render_template('account_home.html', firstname=firstname, data=data,
-                           gpa=gpa, onCampus=onCampus, working=working)
+        working = ''
+    return render_template('account_home.html', firstname=first_name, data=data,
+                           gpa=gpa, onCampus=on_campus, working=working)
 
 
 @application.route('/course_report', methods=['POST'])
@@ -156,11 +157,14 @@ def course_report():
     grapher.plot_student_grades_vs_institution('Institution', 'Grade Percentage', grade_percentage_arr,
                                                institution_arr, 'static/course_report4.png')
     course_info = sql.get_course_info_by_id(course_id)
-    info_str = course_info[1] + ' ' + str(course_info[2]) + ', Credit Hours: ' + str(course_info[3]) +\
-               ', Instructor: ' + course_info[4] + ' ' + course_info[5] + ', Is Tenured: ' +\
-               str(bool(course_info[6])) + ', Years Teaching: ' + str(course_info[7]) + ', Degree: ' + \
-               ['Bachelor\'s', 'Master\'s', 'PHD'][course_info[8]-1]
-
+    info_str = [course_info[1] + ' ' + str(course_info[2]),
+                'Credit Hours: ' + str(course_info[3]),
+                'Instructor: ' + course_info[4] + ' ' + course_info[5],
+                'Is Tenured: ' + str(bool(course_info[6])),
+                'Years Teaching: ' + str(course_info[7]),
+                'Degree: '+['Bachelor\'s', 'Master\'s', 'PHD'][course_info[8]-1]]
+    for item in info_str:
+        print(item)
     return jsonify({'img1': '../static/course_report1.png',
                     'img2': '../static/course_report2.png',
                     'img3': '../static/course_report3.png',
@@ -192,10 +196,11 @@ def instructor_report():
     grapher.plot_student_grades_vs_institution('Institution', 'Grade Percentage', grade_percentage_arr,
                                                institution_arr, 'static/instructor_report4.png')
     instructor_info = sql.get_instructor_info_by_id(instructor_id)
-    info_str = instructor_info[1] + ' ' + instructor_info[2] + ', Teaches: ' + instructor_info[6] + ' ' + \
-               str(instructor_info[7]) + ', Is Tenured: ' + str(bool(instructor_info[3])) +\
-               ', Years Teaching: ' + str(instructor_info[4]) + ', Degree: ' +\
-               ['Bachelor\'s', 'Master\'s', 'PHD'][instructor_info[5]-1]
+    info_str = [instructor_info[1] + ' ' + instructor_info[2],
+                'Teaches: ' + instructor_info[6] + ' ' + str(instructor_info[7]),
+                'Is Tenured: ' + str(bool(instructor_info[3])),
+                'Years Teaching: ' + str(instructor_info[4]),
+                'Degree: ' + ['Bachelor\'s', 'Master\'s', 'PHD'][instructor_info[5]-1]]
     return jsonify({'img1': '../static/instructor_report1.png',
                     'img2': '../static/instructor_report2.png',
                     'img3': '../static/instructor_report3.png',
@@ -237,7 +242,7 @@ def activity_report():
                     'img3': '../static/activity_report3.png',
                     'img4': '../static/activity_report4.png',
                     'img5': '../static/activity_report5.png',
-                    'other_data': info_str})
+                    'other_data': [info_str]})
 
 
 @application.route('/institution_report', methods=['POST'])
@@ -274,7 +279,7 @@ def institution_report():
                     'img3': '../static/institution_report3.png',
                     'img4': '../static/institution_report4.png',
                     'img5': '../static/institution_report5.png',
-                    'other_data': info_str})
+                    'other_data': [info_str]})
 
 
 @application.route('/send', methods=['POST'])
@@ -325,7 +330,7 @@ def send():
 
         message = 'Your predicted grade is: ' + letter_grade + ' ' + str(round(numerical_grade, 2)) + '%'
 
-        return jsonify({'text': message})
+        return jsonify({'text': [message]})
 
 
 if __name__ == '__main__':
