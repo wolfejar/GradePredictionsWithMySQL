@@ -8,6 +8,7 @@ pip install tensorflow
 pip install Flask 
 pip install flask_bootstrap
 pip install matplotlib
+pip install pandas
 pip install Cython
 pip install pymssql
 ```
