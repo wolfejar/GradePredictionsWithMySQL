@@ -38,3 +38,8 @@ http://127.0.0.1:5000/
 ```bash
 python predictor.py [host][user][password][database]
 ```
+
+## Visualizing Data
+```bash
+python visual_test.py [host][user][password][database]
+```
